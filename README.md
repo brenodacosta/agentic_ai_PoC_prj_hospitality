@@ -9,7 +9,7 @@ This repository contains a complete Proof of Concept (PoC) for the hospitality s
 | [🎓 Workshop Guide](./WORKSHOP.md) | Step-by-step workshop for building AI agents with LangChain |
 | [🔧 Synthetic Data Generator](./HOWTO_generate_synthetic_data.md) | How to generate synthetic hotel and booking data |
 | [🤖 AI Agents API](./ai_agents_hospitality-api/README.md) | WebSocket API for AI agent interactions |
-| [🗄️ Bookings Database](./bookings-db/readme.md) | PostgreSQL database and data loader |
+| [🗄️ Bookings Database](./bookings-db/READMEreadme.md) | PostgreSQL database and data loader |
 
 ## 🚀 Quick Start - Launch Application
 
@@ -107,7 +107,7 @@ Below is a visual representation of the project architecture:
 - **Depends On**: Depends on the `bookings-db-data-loader` service.
 - **Environment Variables**:
   - `ENVIRONMENT=development.localcontainer`
-  - `AI_AGENTIC_API_KEY=${AI_AGENTIC_API_KEY}`
+  - `AI_AGENTIC_API_KEY=${AI_AGENTIC_API_KEY_WKSP_HOSPITALITY}`
   - `POSTGRES_HOST=${POSTGRES_HOST}`
   - `POSTGRES_PORT=${POSTGRES_PORT}`
   - `POSTGRES_USER=${POSTGRES_USER}`
@@ -154,11 +154,44 @@ This component provides a PostgreSQL database for hotel bookings, along with a d
 
 ## 🔧 Setup & Configuration
 
-> **IMPORTANT**: Set the AI Agentic API key as an environment variable. **Never** include it in `.env` files or commit it to version control for security reasons.
+### 🔑 API Key Configuration
+
+> **IMPORTANT**: Set the AI Agentic API key (or other credentials) as an environment variable. **Never** include it in `.env` files or commit it to version control for security reasons.
+
+#### Temporary (current terminal session only)
 
 ```bash
-export AI_AGENTIC_API_KEY=your-api-key-here
+export AI_AGENTIC_API_KEY_WKSP_HOSPITALITY=your-api-key-here
 ```
+
+#### Permanent (recommended for WSL/Linux)
+
+To avoid setting the environment variable every time you open a new terminal, add it to your `~/.bashrc` file (located in your user's home directory). This file is executed automatically when your Ubuntu/WSL session starts.
+
+1. Open the file:
+```bash
+nano ~/.bashrc
+```
+
+2. Add the following block at the end of the file:
+```bash
+########################################
+### PERSONAL KEYS
+########################################
+export AI_AGENTIC_API_KEY_WKSP_HOSPITALITY=your-api-key-here
+########################################
+### PERSONAL KEYS (end)
+########################################
+```
+
+3. Save and exit (`Ctrl+X`, then `Y`, then `Enter`)
+
+4. Apply changes to your current session:
+```bash
+source ~/.bashrc
+```
+
+> 💡 **Tip**: Using a dedicated section with clear comments (`### PERSONAL KEYS`) helps you organize and locate your custom environment variables easily.
 
 ### Starting Services with Parameters
 
@@ -322,6 +355,3 @@ cd ai_agents_hospitality-api && python main.py
 - Python 3.12+ (for workshop exercises)
 - OpenAI API key (for LangChain agents)
 
-## License
-
-Property of Accenture. All rights reserved.
