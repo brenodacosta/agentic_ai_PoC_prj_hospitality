@@ -128,11 +128,200 @@ The goal is to implement an agent system with the following structure:
 
 ---
 
+## 📚 Exercise 0: Simple Agentic Assistant with File Context
+
+### Objective
+
+Build a simple AI agentic assistant that answers questions about hotels configuration and rooms (no bookings required) by passing hotel files directly to the LLM context. This exercise introduces the basic scaffolding for an agentic application without the complexity of RAG.
+
+### Prerequisites
+
+1. Install LangChain dependencies:
+```bash
+pip install langchain langchain-openai
+```
+
+2. Set up your OpenAI API key:
+```bash
+export OPENAI_API_KEY=your-api-key-here
+```
+
+3. Generate a small sample of hotel data (3 hotels):
+```bash
+cd bookings-db
+python src/gen_synthetic_hotels.py --num_hotels 3
+```
+
+This will create hotel files in `bookings-db/output_files/hotels/` with a small sample.
+
+### Step 1: Load Hotel Files
+
+Load the hotel data files directly into memory:
+
+```python
+import json
+from pathlib import Path
+
+# Load hotel data from JSON
+hotels_file = Path("bookings-db/output_files/hotels/hotels.json")
+with open(hotels_file, 'r', encoding='utf-8') as f:
+    hotels_data = json.load(f)
+
+# Load hotel details markdown
+hotel_details_file = Path("bookings-db/output_files/hotels/hotel_details.md")
+with open(hotel_details_file, 'r', encoding='utf-8') as f:
+    hotel_details_text = f.read()
+```
+
+### Step 2: Create Simple Agent with Context
+
+Create a basic agent that uses the loaded files as context:
+
+```python
+from langchain_openai import ChatOpenAI
+from langchain.prompts import ChatPromptTemplate
+
+llm = ChatOpenAI(model="gpt-4", temperature=0)
+
+# Create a prompt template that includes the hotel context
+prompt_template = ChatPromptTemplate.from_messages([
+    ("system", """You are a helpful hotel assistant. Use the following hotel information to answer questions.
+
+Hotel Data:
+{hotel_context}
+
+When answering questions:
+- Be accurate and specific
+- Reference hotel names, locations, and details from the data
+- If information is not available, say so clearly
+- Format responses in a clear, readable way"""),
+    ("human", "{question}")
+])
+
+# Create the chain
+chain = prompt_template | llm
+```
+
+### Step 3: Implement the Agent Function
+
+```python
+def answer_hotel_question(question: str) -> str:
+    """Simple agent that answers questions using hotel files as context."""
+    
+    # Prepare context from loaded files
+    hotel_context = f"""
+{hotel_details_text}
+
+Hotels JSON Summary:
+{json.dumps(hotels_data, indent=2, ensure_ascii=False)}
+"""
+    
+    # Invoke the chain
+    response = chain.invoke({
+        "hotel_context": hotel_context,
+        "question": question
+    })
+    
+    return response.content
+```
+
+### Step 4: Test the Agent
+
+Test with simple queries:
+
+```python
+# Test queries
+queries = [
+    "List all hotels and their cities",
+    "What is the address of the first hotel?",
+    "What meal plans are available?",
+    "Tell me about room types in these hotels"
+]
+
+for query in queries:
+    answer = answer_hotel_question(query)
+    print(f"Q: {query}")
+    print(f"A: {answer}\n")
+```
+
+### Step 5: Integrate with WebSocket API (Basic)
+
+Create a simple integration point for the WebSocket API:
+
+```python
+# In main.py or a new agent module
+async def handle_hotel_query_simple(user_query: str) -> str:
+    """Handle hotel queries using simple file context approach."""
+    try:
+        response = answer_hotel_question(user_query)
+        return response
+    except Exception as e:
+        return f"Error processing query: {str(e)}"
+```
+
+### Expected Queries to Handle
+
+- "List all hotels and their locations"
+- "What is the address of [hotel name]?"
+- "What meal plans are available?"
+- "Tell me about the rooms in [hotel name]"
+- "What discounts are available?"
+
+### Key Differences from Exercise 1
+
+| Aspect | Exercise 0 | Exercise 1 |
+|--------|------------|------------|
+| **Data Size** | 3 hotels (small sample) | 50 hotels (full dataset) |
+| **Method** | Direct file context | RAG with vector store |
+| **Complexity** | Simple, straightforward | Advanced retrieval |
+| **Use Case** | Learning scaffolding | Production-ready |
+
+### 📋 Plan
+
+#### Phase 1: Setup & Data Preparation
+- [ ] Install LangChain dependencies (`langchain`, `langchain-openai`)
+- [ ] Configure OpenAI API key as environment variable
+- [ ] Generate synthetic hotel data (3 hotels) using `gen_synthetic_hotels.py`
+- [ ] Verify hotel files are created in `bookings-db/output_files/hotels/`
+
+#### Phase 2: Core Implementation
+- [ ] Create function to load hotel JSON file (`hotels.json`)
+- [ ] Create function to load hotel details markdown (`hotel_details.md`)
+- [ ] Implement `answer_hotel_question()` function with file context
+- [ ] Create ChatPromptTemplate with system prompt for hotel assistant
+- [ ] Build LangChain chain (prompt template + LLM)
+
+#### Phase 3: Integration & Testing
+- [ ] Create `handle_hotel_query_simple()` async function for WebSocket API
+- [ ] Test with basic queries (hotel names, addresses, locations)
+- [ ] Test with meal plan queries
+- [ ] Test with room information queries
+- [ ] Verify error handling works correctly
+
+#### Phase 4: Documentation & Cleanup
+- [ ] Add code comments and docstrings
+- [ ] Test integration with WebSocket API endpoint
+- [ ] Verify responses are properly formatted
+
+### Deliverables
+
+- [ ] Function to load hotel files (3 hotels sample)
+- [ ] Simple agent chain with file context
+- [ ] Basic prompt template for hotel queries
+- [ ] Integration point for WebSocket API
+- [ ] Test with sample queries
+
+### Next Steps
+
+After completing Exercise 0, you'll be ready to move to Exercise 1, which implements RAG with the full dataset (50 hotels) for better scalability and performance.
+
+---
+
 ## 📚 Exercise 1: Hotel Details with RAG
 
 ### Objective
 
-Implement a RAG (Retrieval Augmented Generation) agent that can answer questions about hotels and rooms by retrieving information from a vector store.
+Implement a RAG (Retrieval Augmented Generation) agent that can answer questions about hotels and rooms by retrieving information from a vector store. This exercise uses the **full dataset of 50 hotels** for production-ready scalability.
 
 ### Prerequisites
 
@@ -146,12 +335,20 @@ pip install langchain langchain-openai langchain-community chromadb
 export OPENAI_API_KEY=your-api-key-here
 ```
 
+3. Generate the full hotel dataset (50 hotels):
+```bash
+cd bookings-db
+python src/gen_synthetic_hotels.py --num_hotels 50
+```
+
 ### Step 1: Prepare the Data for RAG
 
-The hotel data needs to be loaded into a vector store. Use the generated files:
-- `bookings-db/output_files/hotels/hotels.json` - Complete hotel data
-- `bookings-db/output_files/hotels/hotel_details.md` - Hotel details in markdown
-- `bookings-db/output_files/hotels/hotel_rooms.md` - Room information
+The hotel data needs to be loaded into a vector store. Use the generated files with the **full dataset of 50 hotels**:
+- `bookings-db/output_files/hotels/hotels.json` - Complete hotel data (50 hotels)
+- `bookings-db/output_files/hotels/hotel_details.md` - Hotel details in markdown (50 hotels)
+- `bookings-db/output_files/hotels/hotel_rooms.md` - Room information (50 hotels)
+
+> **Note**: Unlike Exercise 0 which used 3 hotels with direct file context, Exercise 1 uses RAG with 50 hotels for better scalability and efficient retrieval.
 
 ### Step 2: Create the Vector Store
 
@@ -201,6 +398,49 @@ Create an agent that:
 - "List all hotels in France with their cities"
 - "What is the discount for extra bed in Grand Victoria?"
 - "Compare room prices between peak and off season for hotels in Nice"
+
+### 📋 Plan
+
+#### Phase 1: Setup & Data Preparation
+- [ ] Install RAG dependencies (`langchain-community`, `chromadb`)
+- [ ] Generate full hotel dataset (50 hotels) using `gen_synthetic_hotels.py`
+- [ ] Verify all hotel files are created (JSON, markdown files)
+
+#### Phase 2: Vector Store Creation
+- [ ] Implement document loader for `hotels.json` (JSONLoader)
+- [ ] Implement document loader for `hotel_details.md` (TextLoader)
+- [ ] Implement document loader for `hotel_rooms.md` (TextLoader)
+- [ ] Configure RecursiveCharacterTextSplitter (chunk_size=1000, overlap=200)
+- [ ] Create OpenAI embeddings instance
+- [ ] Build ChromaDB vector store from all documents
+- [ ] Persist vector store to disk for reuse
+
+#### Phase 3: RAG Chain Implementation
+- [ ] Create ChatOpenAI LLM instance (gpt-4, temperature=0)
+- [ ] Implement RetrievalQA chain with vector store
+- [ ] Design system prompt for hotel assistant context
+- [ ] Configure retrieval parameters (k=5 documents)
+- [ ] Test retrieval quality with sample queries
+
+#### Phase 4: Agent Implementation
+- [ ] Create hotel details agent function
+- [ ] Implement query preprocessing (normalization, validation)
+- [ ] Add response formatting (markdown structure)
+- [ ] Handle edge cases (no results, ambiguous queries)
+
+#### Phase 5: Integration & Testing
+- [ ] Integrate RAG agent with WebSocket API
+- [ ] Test with hotel location queries
+- [ ] Test with meal plan and pricing queries
+- [ ] Test with room comparison queries
+- [ ] Verify performance (response time < 10s)
+- [ ] Compare results with Exercise 0 (should be more accurate)
+
+#### Phase 6: Optimization
+- [ ] Tune chunk size and overlap if needed
+- [ ] Optimize retrieval k parameter
+- [ ] Add caching for frequent queries (optional)
+- [ ] Document vector store persistence strategy
 
 ### Deliverables
 
@@ -324,6 +564,63 @@ RevPAR = Total Revenue / Total Available Room-Nights
 - "How many guests from Germany stayed at our hotels in 2025?"
 - "Compare bookings by meal plan type across all hotels"
 
+### 📋 Plan
+
+#### Phase 1: Setup & Database Connection
+- [ ] Start PostgreSQL database using `./start-app.sh --no_ai_agent`
+- [ ] Install SQL dependencies (`langchain-community`, `psycopg2-binary`)
+- [ ] Verify database connection (test connection string)
+- [ ] Inspect database schema and understand table structure
+- [ ] Load sample booking data to test queries
+
+#### Phase 2: SQL Database Integration
+- [ ] Create SQLDatabase instance from connection URI
+- [ ] Test basic SQL queries manually (SELECT, COUNT, SUM)
+- [ ] Verify database schema introspection works
+- [ ] Test date filtering and aggregation queries
+
+#### Phase 3: SQL Agent Implementation
+- [ ] Create SQLDatabaseToolkit with database and LLM
+- [ ] Implement create_sql_agent with proper system prompt
+- [ ] Configure agent for hospitality context (hotel names, dates, metrics)
+- [ ] Add custom system prompt explaining booking schema
+- [ ] Test agent with simple queries (booking counts)
+
+#### Phase 4: Analytics Calculations
+- [ ] Implement bookings count query logic
+- [ ] Implement occupancy rate calculation (two-step: query + formula)
+- [ ] Implement total revenue aggregation
+- [ ] Implement RevPAR calculation (revenue / available room-nights)
+- [ ] Handle edge cases (no bookings, division by zero)
+
+#### Phase 5: Two-Step Query Process
+- [ ] Implement Step 1: Generate SQL from natural language
+- [ ] Implement Step 2: Execute query and format results
+- [ ] Add query validation before execution
+- [ ] Implement result formatting (tables, markdown)
+- [ ] Add error handling for SQL syntax errors
+
+#### Phase 6: Advanced Queries & Testing
+- [ ] Test with date range queries (months, quarters, years)
+- [ ] Test with hotel-specific filters
+- [ ] Test with guest country/city filters
+- [ ] Test with meal plan comparisons
+- [ ] Verify occupancy and RevPAR calculations are accurate
+- [ ] Test with edge cases (empty results, invalid dates)
+
+#### Phase 7: Integration & Error Handling
+- [ ] Integrate SQL agent with WebSocket API
+- [ ] Add comprehensive error handling (connection errors, query errors)
+- [ ] Implement query timeout protection
+- [ ] Add logging for debugging SQL generation
+- [ ] Test end-to-end with WebSocket interface
+
+#### Phase 8: Optimization & Documentation
+- [ ] Optimize system prompt for better SQL generation
+- [ ] Add query result caching for common queries (optional)
+- [ ] Document SQL agent limitations and best practices
+- [ ] Add code comments and docstrings
+
 ### Deliverables
 
 - [ ] SQL agent that generates correct queries
@@ -352,6 +649,13 @@ response_content = await your_agent_chain.ainvoke(user_query)
 ---
 
 ## ✅ Success Criteria
+
+### Exercise 0: Simple Agentic Assistant
+- [ ] Successfully loads hotel files (3 hotels sample)
+- [ ] Answers basic questions about hotels using file context
+- [ ] Handles queries about hotel names, addresses, and basic details
+- [ ] Provides responses in readable format
+- [ ] Basic integration with WebSocket API works
 
 ### Exercise 1: RAG Agent
 - [ ] Correctly answers questions about hotel details
@@ -384,11 +688,12 @@ response_content = await your_agent_chain.ainvoke(user_query)
 
 ## 🎓 Workshop Tips
 
-1. **Start Simple**: Begin with basic queries before implementing complex analytics
-2. **Test Incrementally**: Test each component before integrating
-3. **Use Logging**: Add logging to understand agent behavior
-4. **Handle Errors Gracefully**: Users should get helpful error messages
-5. **Optimize Prompts**: The system prompt is crucial for agent accuracy
+1. **Start with Exercise 0**: Begin with the simple file context approach (3 hotels) to understand the basic scaffolding before moving to RAG
+2. **Progress Incrementally**: Complete Exercise 0 → Exercise 1 (RAG with 50 hotels) → Exercise 2 (SQL Agent)
+3. **Test Incrementally**: Test each component before integrating
+4. **Use Logging**: Add logging to understand agent behavior
+5. **Handle Errors Gracefully**: Users should get helpful error messages
+6. **Optimize Prompts**: The system prompt is crucial for agent accuracy
 
 ---
 
@@ -397,11 +702,12 @@ response_content = await your_agent_chain.ainvoke(user_query)
 ```
 ai_agents_hospitality-api/
 ├── agents/
-│   ├── hotel_rag_agent.py      # Exercise 1: RAG implementation
+│   ├── hotel_simple_agent.py   # Exercise 0: Simple file context agent
+│   ├── hotel_rag_agent.py      # Exercise 1: RAG implementation (50 hotels)
 │   ├── bookings_sql_agent.py   # Exercise 2: SQL implementation
 │   └── orchestrator.py         # Agent coordination
 ├── vectorstore/
-│   └── chroma_db/              # Vector store data
+│   └── chroma_db/              # Vector store data (Exercise 1)
 ├── main.py                     # WebSocket API (modified)
 └── requirements.txt            # Updated dependencies
 ```

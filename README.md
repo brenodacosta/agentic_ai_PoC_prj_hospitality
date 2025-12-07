@@ -313,6 +313,7 @@ The workshop is divided into two exercises:
 
 | Exercise | Topic | Description |
 |----------|-------|-------------|
+| **Exercise 0** | File context for Hotel Details | Introduction Agentic IA asssitant by passing hotel files (small sample) directly to context and building the first Agentic scaffolding |
 | **Exercise 1** | RAG for Hotel Details | Build a RAG agent to answer questions about hotels and rooms |
 | **Exercise 2** | SQL Agent for Bookings | Build an SQL agent to query and analyze booking data |
 
@@ -349,9 +350,50 @@ cd ai_agents_hospitality-api && python main.py
 # 3. Access the chatbot at http://localhost:8001
 ```
 
-## Requirements
+## 📋 Prerequisites
 
-- Docker and Docker Compose (**Required** - this is the only supported deployment method)
-- Python 3.12+ (for workshop exercises)
-- OpenAI API key (for LangChain agents)
+### 🖥️ Platform Prerequisites
+
+#### Recommended Development Environment
+
+| Component | Requirement | Notes |
+|-----------|-------------|-------|
+| **Operating System** | WSL2 with Ubuntu latest 24 for Windows or macOS | WSL2 is the recommended environment for Windows users |
+| **Docker** | Docker Engine + Docker Compose | Must be installed **inside WSL** (not Docker Desktop for Windows) |
+| **Git** | Git 2.52+ | Version control, default on Ubuntu 24 |
+| **Python** | Python 3.12+ | Required for workshop exercises and local development, default on Ubuntu 24|
+| **IDE** | VS Code, or forked IDEs like Cursor, Windsurf, Antigravity| Recommended with extensions listed below and remote WSL development |
+
+#### IDE Setup (Recommended)
+
+- **Visual Studio Code** with the following extensions:
+  - **Remote - WSL** (for Windows users): Enables development directly inside WSL
+  - **GitHub Copilot**: AI-powered code completion and assistance
+  - **Python**: Python language support
+  - **Docker**: Docker file support and container management
+
+> 💡 **Important for Windows Users**: Always open VS Code from within WSL (`code .` from WSL terminal) to ensure proper file system access and Docker integration.
+
+
+### 🧠 Knowledge Prerequisites
+
+To get the most out of this project and workshop, familiarity with the following is recommended:
+
+| Area | Level | Topics |
+|------|-------|--------|
+| **Python** | Intermediate | Classes, async/await, virtual environments, pip/uv |
+| **Docker** | Basic | Containers, images, docker-compose, volumes |
+| **SQL** | Basic | SELECT, JOIN, WHERE, aggregate functions |
+| **REST APIs** | Basic | HTTP methods, WebSockets, JSON |
+| **AI/LLMs** | Basic | Understanding of LLMs, prompts, and embeddings |
+| **Git** | Basic | Clone, commit, push, branches |
+| **Agentic AI** | Basic | Agentic AI knowledge, Langchain/Langraph, RAG |
+
+### 🔧 Required Accounts & API Keys
+
+| Service | Purpose | How to Obtain |
+|---------|---------|---------------|
+| **OpenAI API Key** | Powers the LangChain AI agents | [OpenAI Platform](https://platform.openai.com/api-keys) |
+
+> ⚠️ **Note**: An OpenAI API or equivalent key with available credits is required to run the AI agents. The workshop exercises will make API calls that consume credits.
 
