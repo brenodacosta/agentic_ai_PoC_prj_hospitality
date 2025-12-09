@@ -20,7 +20,7 @@ COPY src/ /app/
 RUN mkdir -p /app/data
 
 # Copy the Excel file
-COPY output/bookings/all_bookings.xlsx /app/data/
+COPY output_files/bookings/all_bookings.xlsx /app/data/
 
 # Make the initialization script executable
 RUN chmod +x /app/db/init-db.sh
