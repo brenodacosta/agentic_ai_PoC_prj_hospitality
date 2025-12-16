@@ -234,9 +234,9 @@ When you complete a task, reference the commit like this:
 ## 📊 Quick Summary
 
 ```
-📌 Pending:  2
+📌 Pending:  10
 🔥 In progress: 0
-✅ Completed: 9
+✅ Completed: 20
 🐛 Technical debt: 0
 🎓 Workshop Exercises: 3 (Exercise 0, 1, 2)
 ```
