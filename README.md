@@ -107,7 +107,7 @@ Below is a visual representation of the project architecture:
 - **Depends On**: Depends on the `bookings-db-data-loader` service.
 - **Environment Variables**:
   - `ENVIRONMENT=development.localcontainer`
-  - `AI_AGENTIC_API_KEY=${AI_AGENTIC_API_KEY_WKSP_HOSPITALITY}`
+  - `AI_AGENTIC_API_KEY=${AI_AGENTIC_API_KEY}`
   - `POSTGRES_HOST=${POSTGRES_HOST}`
   - `POSTGRES_PORT=${POSTGRES_PORT}`
   - `POSTGRES_USER=${POSTGRES_USER}`
@@ -161,7 +161,7 @@ This component provides a PostgreSQL database for hotel bookings, along with a d
 #### Temporary (current terminal session only)
 
 ```bash
-export AI_AGENTIC_API_KEY_WKSP_HOSPITALITY=your-api-key-here
+export AI_AGENTIC_API_KEY=your-api-key-here
 ```
 
 #### Permanent (recommended for WSL/Linux)
@@ -178,7 +178,7 @@ nano ~/.bashrc
 ########################################
 ### PERSONAL KEYS
 ########################################
-export AI_AGENTIC_API_KEY_WKSP_HOSPITALITY=your-api-key-here
+export AI_AGENTIC_API_KEY=your-api-key-here
 ########################################
 ### PERSONAL KEYS (end)
 ########################################
@@ -393,7 +393,7 @@ To get the most out of this project and workshop, familiarity with the following
 
 | Service | Purpose | How to Obtain |
 |---------|---------|---------------|
-| **OpenAI API Key** | Powers the LangChain AI agents | [OpenAI Platform](https://platform.openai.com/api-keys) |
+| **Google Gemini API Key** | Powers the LangChain AI agents | [Google AI Studio](https://makersuite.google.com/app/apikey) |
 
-> ⚠️ **Note**: An OpenAI API or equivalent key with available credits is required to run the AI agents. The workshop exercises will make API calls that consume credits.
+> ⚠️ **Note**: A Google Gemini API key with available credits is required to run the AI agents. The workshop exercises will make API calls that consume credits.
 
