@@ -1,6 +1,6 @@
 # 📋 TODO - Agentic AI Hospitality PoC
 
-> Last updated: 2025-12-06
+> Last updated: 2025-12-16
 
 ---
 
@@ -8,7 +8,9 @@
 
 | Task | Priority | Started | Notes |
 |------|----------|---------|-------|
-| _No tasks in progress_ | - | - | - |
+| **ex_0_phase_2**: Implement `load_hotel_data` to read hotel files | 🔴 | 2025-12-16 | - |
+| **ex_0_phase_2**: Implement `initialize_agent` with LangChain & Gemini | 🔴 | 2025-12-16 | - |
+| **ex_0_phase_2**: Implement `answer_hotel_question` for simple queries | 🔴 | 2025-12-16 | - |
 
 ---
 
@@ -17,9 +19,8 @@
 ### High Priority
 | # | Task | Created | Context |
 |---|------|--------|---------|
-| 1 | xxxx | 2025-12-06 | xxxx |
-| 2 | xxxy | 2025-12-06 | xxxy |
-| 3 | xxxz | 2025-12-06 | xxxz |
+| 1 | **ex_0_phase_3**: Verify agent implementation with `test_exercise_0.py` | 2025-12-16 | ai_agents_hospitality-api/ |
+| 2 | **ex_0_phase_3**: Create `handle_hotel_query_simple()` async function for WebSocket API | 2025-12-16 | ai_agents_hospitality-api/main.py |
 
 ### Medium Priority
 | # | Task | Created | Context |
@@ -37,7 +38,10 @@
 
 | Task | Completed | Commit | Notes |
 |------|-----------|--------|-------|
-| _No tasks completed yet_ | - | - | - |
+| **ex_0_phase_1**: Install LangChain dependencies (langchain, langchain-google-genai) | 2025-12-16 | N/A | Libraries were created in the venv |
+| **ex_0_phase_1**: Generate synthetic hotel data (3 hotels) using gen_synthetic_hotels.py | 2025-12-16 | [ef0a0d6](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/ef0a0d601f090a1f16d9982ca66d6c22fe3352b8) | Data was created in the xlsx files |
+| **ex_0_phase_1**: Verify hotel files are created in bookings-db/output_files/hotels/ | 2025-12-16 | [ef0a0d6](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/ef0a0d601f090a1f16d9982ca66d6c22fe3352b8) | Data was created in the xlsx files |
+| **ex_0_phase_1**: Configure Google Gemini API key as environment variable (AI_AGENTIC_API_KEY) | 2025-12-11 | N/A | Deployed and tested the key. Added the key to bashrc file. |
 
 ---
 
@@ -75,10 +79,10 @@ When you complete a task, reference the commit like this:
 ### Exercise 0: Simple Agentic Assistant with File Context
 
 #### Phase 1: Setup & Data Preparation
-- [ ] Install LangChain dependencies (`langchain`, `langchain-google-genai`)
-- [ ] Configure Google Gemini API key as environment variable (`AI_AGENTIC_API_KEY`)
-- [ ] Generate synthetic hotel data (3 hotels) using `gen_synthetic_hotels.py`
-- [ ] Verify hotel files are created in `bookings-db/output_files/hotels/`
+- [✅] Install LangChain dependencies (`langchain`, `langchain-google-genai`)
+- [✅] Configure Google Gemini API key as environment variable (`AI_AGENTIC_API_KEY`)
+- [✅] Generate synthetic hotel data (3 hotels) using `gen_synthetic_hotels.py`
+- [✅] Verify hotel files are created in `bookings-db/output_files/hotels/`
 
 #### Phase 2: Core Implementation
 - [ ] Create function to load hotel JSON file (`hotels.json`)
@@ -208,9 +212,9 @@ When you complete a task, reference the commit like this:
 ## 📊 Quick Summary
 
 ```
-📌 Pending:  4
-🔥 In progress: 0
-✅ Completed: 0
+📌 Pending:  2
+🔥 In progress: 3
+✅ Completed: 4
 🐛 Technical debt: 0
 🎓 Workshop Exercises: 3 (Exercise 0, 1, 2)
 ```
