@@ -35,7 +35,7 @@ except ImportError:
 
 from util.configuration import PROJECT_ROOT
 from util.logger_config import logger
-from config.agent_config import get_agent_config
+from config.agent_config import get_agent_config, _load_config_file
 
 # Path to hotel data files (relative to project root)
 # First try local data directory (for Docker), then fallback to bookings-db
@@ -51,12 +51,17 @@ def _get_hotels_data_path():
     Returns:
         Path: Path to the hotels data directory
     """
-    if HOTELS_DATA_PATH_LOCAL.exists() and (HOTELS_DATA_PATH_LOCAL / "hotels.json").exists():
+    config = _load_config_file()
+    use_local = config.get("hotels", {}).get("local", True)
+    if use_local and HOTELS_DATA_PATH_LOCAL.exists() and (HOTELS_DATA_PATH_LOCAL / "hotels.json").exists():
         logger.info(f"Using local hotel data path: {HOTELS_DATA_PATH_LOCAL}")
         return HOTELS_DATA_PATH_LOCAL
-    else:
+    elif HOTELS_DATA_PATH_EXTERNAL.exists() and (HOTELS_DATA_PATH_EXTERNAL / "hotels.json").exists():
         logger.info(f"Using external hotel data path: {HOTELS_DATA_PATH_EXTERNAL}")
         return HOTELS_DATA_PATH_EXTERNAL
+    else:
+        logger.warning(f"No valid hotel data path found; defaulting to local path: {HOTELS_DATA_PATH_LOCAL}")
+        return HOTELS_DATA_PATH_LOCAL
 
 # Global variables to cache loaded data and agent
 _hotels_data: Optional[dict] = None
