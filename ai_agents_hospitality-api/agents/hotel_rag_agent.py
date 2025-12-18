@@ -4,8 +4,6 @@ from langchain_community.vectorstores import Chroma
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain.chains.retrieval_qa.base import RetrievalQA
 from langchain_core.prompts import PromptTemplate
-from langchain.embeddings import CacheBackedEmbeddings
-from langchain.storage import LocalFileStore
 import os
 import json
 import asyncio
@@ -40,14 +38,8 @@ def _get_hotels_data_path():
         logger.warning(f"No valid hotel data path found; defaulting to local path: {HOTELS_DATA_PATH_LOCAL}")
         return HOTELS_DATA_PATH_LOCAL
     
-# Create embeddings with cache
-base_embeddings = GoogleGenerativeAIEmbeddings(model="text-embedding-004", google_api_key=os.getenv("AI_AGENTIC_API_KEY"))
-store = LocalFileStore(str(PROJECT_ROOT / "cache" / "embeddings"))
-embeddings = CacheBackedEmbeddings.from_bytes_store(
-    base_embeddings,
-    store,
-    namespace=base_embeddings.model
-)
+# Create embeddings
+embeddings = GoogleGenerativeAIEmbeddings(model="text-embedding-004", google_api_key=os.getenv("AI_AGENTIC_API_KEY"))
 
 # Initialize Vector Store
 chroma_host = os.getenv("CHROMA_HOST")
@@ -144,16 +136,24 @@ llm = ChatGoogleGenerativeAI(
 )
 
 # Define Prompt Template
-template = """You are a helpful hotel assistant. Use the following pieces of context to answer the question at the end. 
-If you don't know the answer, just say that you don't know, don't try to make up an answer. 
-Keep the answer concise and accurate.
+template = """You are a helpful hotel assistant. Use the following pieces of context to answer the question at the end.
 
 Context:
 {context}
 
+When answering questions:
+- Be accurate and specific
+- Reference hotel names, locations, and details from the data
+- If information is not available, say so clearly
+- Format responses in a clear, readable way using markdown
+- Use bullet points and tables when appropriate
+- Include specific prices, addresses, and details when available
+
 Question: {question}
 
 Helpful Answer:"""
+
+
 print("Prompt Template:")
 print(template)
 

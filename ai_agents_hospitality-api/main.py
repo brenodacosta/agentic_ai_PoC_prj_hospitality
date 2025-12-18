@@ -25,10 +25,11 @@ from util.configuration import settings, PROJECT_ROOT
 # Import Exercise 0 agent
 EXERCISE_0_AVAILABLE = False
 try:
-    from agents.hotel_simple_agent import handle_hotel_query_simple, load_hotel_data
+    # from agents.hotel_simple_agent import handle_hotel_query_simple, load_hotel_data
+    from agents.hotel_rag_agent import handle_hotel_query_rag
     # Try to load hotel data to verify everything is set up correctly
     try:
-        load_hotel_data()
+        # load_hotel_data()
         EXERCISE_0_AVAILABLE = True
         logger.info("✅ Exercise 0 agent loaded successfully and hotel data verified")
     except Exception as e:
@@ -236,8 +237,10 @@ async def websocket_endpoint(websocket: WebSocket, uuid: str):
                 if EXERCISE_0_AVAILABLE:
                     try:
                         logger.info(f"Using Exercise 0 agent for query: {user_query[:100]}...")
-                        response_content = await handle_hotel_query_simple(user_query)
-                        logger.info(f"✅ Exercise 0 agent response generated successfully for {uuid}")
+                        # response_content = await handle_hotel_query_simple(user_query)
+                        response_content = await handle_hotel_query_rag(user_query)
+                        # logger.info(f"✅ Exercise 0 agent response generated successfully for {uuid}")
+                        logger.info(f"✅ Exercise 1 agent response generated successfully for {uuid}")
                     except Exception as e:
                         logger.error(f"❌ Error in Exercise 0 agent: {e}", exc_info=True)
                         logger.warning(f"Falling back to hardcoded response for {uuid}")
