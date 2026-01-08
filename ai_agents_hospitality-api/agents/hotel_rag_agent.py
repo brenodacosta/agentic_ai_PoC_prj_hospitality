@@ -345,7 +345,7 @@ def tool_market_analysis(location: str) -> str:
 
 # Wrap your existing vectorstore into a tool
 tool_vector_search = create_retriever_tool(
-    vectorstore.as_retriever(search_kwargs={"k": 5}),
+    vectorstore.as_retriever(search_kwargs={"k": 10}),
     "tool_search_descriptions",
     "Useful for questions about amenities, hotel vibes, descriptions, styles, and policies. NOT for listing hotels or calculating prices."
 )
@@ -374,6 +374,10 @@ agent_prompt = ChatPromptTemplate.from_messages([
        - "List all hotels in..."
        - "Compare prices between..."
        - "How many hotels..."
+       - "Market analysis of..."
+       - Aggregated data across multiple hotels.
+       - "Summarize hotel options in..."
+       - "What are the meal plan charges in..."
 
     STRATEGY:
     - Question: "Where is Obsidian Tower?" -> Use **Library** (RAG).
