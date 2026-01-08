@@ -8,7 +8,15 @@
 
 | Task | Priority | Started | Notes |
 |------|----------|---------|-------|
-| _No tasks in progress_ | - | - | - |
+| Implement query preprocessing (normalization, validation) | 🟡 Medium | 2026-01-08 | Ex 1 Phase 4 |
+| Add response formatting (markdown structure) | 🟢 Low | 2026-01-08 | Ex 1 Phase 4 |
+| Handle edge cases (no results, ambiguous queries) | 🔴 High | 2026-01-08 | Ex 1 Phase 4 |
+| Verify performance (response time < 10s) | 🟡 Medium | 2026-01-08 | Ex 1 Phase 5 |
+| Compare results with Exercise 0 (should be more accurate) | 🟢 Low | 2026-01-08 | Ex 1 Phase 5 |
+| Tune chunk size and overlap if needed | 🟢 Low | 2026-01-08 | Ex 1 Phase 6 |
+| Optimize retrieval k parameter | 🟢 Low | 2026-01-08 | Ex 1 Phase 6 |
+| Add caching for frequent queries (optional) | 🟢 Low | 2026-01-08 | Ex 1 Phase 6 |
+| Document vector store persistence strategy | 🟢 Low | 2026-01-08 | Ex 1 Phase 6 |
 
 ---
 
@@ -17,16 +25,11 @@
 ### High Priority
 | # | Task | Created | Context |
 |---|------|--------|---------|
-| 1 | **ex_1_phase_1**: Install RAG dependencies (`langchain-community`, `chromadb`) | 2025-12-16 | ai_agents_hospitality-api/ |
-| 2 | **ex_1_phase_1**: Generate full hotel dataset (50 hotels) using `gen_synthetic_hotels.py` | 2025-12-16 | bookings-db/ |
-| 3 | **ex_1_phase_1**: Verify all hotel files are created (JSON, markdown files) | 2025-12-16 | bookings-db/output_files/hotels/ |
-| 4 | **ex_1_phase_2**: Implement document loader for `hotels.json` (JSONLoader) | 2025-12-16 | agents/hotel_rag_agent.py |
-| 5 | **ex_1_phase_2**: Implement document loader for `hotel_details.md` (TextLoader) | 2025-12-16 | agents/hotel_rag_agent.py |
-| 6 | **ex_1_phase_2**: Implement document loader for `hotel_rooms.md` (TextLoader) | 2025-12-16 | agents/hotel_rag_agent.py |
-| 7 | **ex_1_phase_2**: Configure RecursiveCharacterTextSplitter (chunk_size=1000, overlap=200) | 2025-12-16 | agents/hotel_rag_agent.py |
-| 8 | **ex_1_phase_2**: Create GoogleGenerativeAIEmbeddings instance | 2025-12-16 | agents/hotel_rag_agent.py |
-| 9 | **ex_1_phase_2**: Build ChromaDB vector store from all documents | 2025-12-16 | agents/hotel_rag_agent.py |
-| 10 | **ex_1_phase_2**: Persist vector store to disk for reuse | 2025-12-16 | agents/hotel_rag_agent.py |
+| 1 | **ex_2_phase_1**: Start PostgreSQL database using `./start-app.sh --no_ai_agent` | 2026-01-08 | bookings-db/ |
+| 2 | **ex_2_phase_1**: Install SQL dependencies (`langchain-community`, `psycopg2-binary`) | 2026-01-08 | ai_agents_hospitality-api/ |
+| 3 | **ex_2_phase_1**: Verify database connection (test connection string) | 2026-01-08 | ai_agents_hospitality-api/ |
+| 4 | **ex_2_phase_1**: Inspect database schema and understand table structure | 2026-01-08 | bookings-db/ |
+| 5 | **ex_2_phase_1**: Load sample booking data to test queries | 2026-01-08 | bookings-db/ |
 
 ### Medium Priority
 | # | Task | Created | Context |
@@ -64,6 +67,26 @@
 | **ex_0_phase_4**: Add code comments and docstrings | 2025-12-16 | [e411356](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/e411356fff549768fd82728ac8a43bf8ae615a61) | - |
 | **ex_0_phase_4**: Verify responses are properly formatted | 2025-12-16 | [e411356](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/e411356fff549768fd82728ac8a43bf8ae615a61) | - |
 | **ex_0_phase_4**: Test integration with WebSocket API endpoint | 2025-12-16 | [41acfff](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/41acffffa02424d534bd1ebc8142a295aabe650a) | Integration validated with `test_websocket_integration.py` |
+| **ex_1_phase_1**: Install RAG dependencies (`langchain-community`, `chromadb`) | 2025-12-17 | N/A | Installed dependencies in venv |
+| **ex_1_phase_1**: Generate full hotel dataset (50 hotels) using `gen_synthetic_hotels.py` | 2025-12-17 | [19b415b](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/19b415bc5f8ae50bd3217c8d74d571f98e0dee4a) | Generated 50 hotels dataset |
+| **ex_1_phase_1**: Verify all hotel files are created (JSON, markdown files) | 2025-12-17 | [19b415b](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/19b415bc5f8ae50bd3217c8d74d571f98e0dee4a) | Verified output files exist |
+| **ex_1_phase_2**: Implement document loader for `hotels.json` (JSONLoader) | 2025-12-17 | [05a0d4b](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/05a0d4b025426cd73fce61b6704987769f5f77c0) | Implemented JSONLoader |
+| **ex_1_phase_2**: Implement document loader for `hotel_details.md` (TextLoader) | 2025-12-17 | [05a0d4b](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/05a0d4b025426cd73fce61b6704987769f5f77c0) | Implemented TextLoader for details |
+| **ex_1_phase_2**: Implement document loader for `hotel_rooms.md` (TextLoader) | 2025-12-17 | [05a0d4b](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/05a0d4b025426cd73fce61b6704987769f5f77c0) | Implemented TextLoader for rooms |
+| **ex_1_phase_2**: Configure RecursiveCharacterTextSplitter (chunk_size=1000, overlap=200) | 2025-12-17 | [7d340e2](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/7d340e240d0929ee69bf4b484c11ab9ac67362db) | Configured text splitter |
+| **ex_1_phase_2**: Create GoogleGenerativeAIEmbeddings instance | 2025-12-17 | [7d340e2](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/7d340e240d0929ee69bf4b484c11ab9ac67362db) | Initialized embeddings model |
+| **ex_1_phase_2**: Build ChromaDB vector store from all documents | 2025-12-17 | [7d340e2](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/7d340e240d0929ee69bf4b484c11ab9ac67362db) | Vector store created |
+| **ex_1_phase_2**: Persist vector store to disk for reuse | 2025-12-17 | [7d340e2](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/7d340e240d0929ee69bf4b484c11ab9ac67362db) | Vector store persisted |
+| **ex_1_phase_3**: Create ChatGoogleGenerativeAI LLM instance (gemini-2.5-flash-lite, temperature=0) | 2025-12-18 | [7d340e2](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/7d340e240d0929ee69bf4b484c11ab9ac67362db) | - |
+| **ex_1_phase_3**: Implement RetrievalQA chain with vector store | 2025-12-18 | [7d340e2](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/7d340e240d0929ee69bf4b484c11ab9ac67362db) | RAG implemented with tools to search in the database for queries such as "list all..." |
+| **ex_1_phase_3**: Design system prompt for hotel assistant context | 2026-01-07 | [d2cb36f](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d2cb36f8def899fcbd614b86984af5e84595c5cc) | Prompt created to prioritize RAG, but to use other tools when RAG is not effective |
+| **ex_1_phase_3**: Configure retrieval parameters (k=5 documents) | 2025-12-18 | [7d340e2](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/7d340e240d0929ee69bf4b484c11ab9ac67362db) | - |
+| **ex_1_phase_3**: Test retrieval quality with sample queries | 2026-01-07 | [d2cb36f](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d2cb36f8def899fcbd614b86984af5e84595c5cc) | It's a trade-off between response time and retrieval accuracy |
+| **ex_1_phase_4**: Create hotel details agent function | 2025-12-18 | [7d340e2](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/7d340e240d0929ee69bf4b484c11ab9ac67362db) | RAG implemented with tools to search in the database for queries such as "list all..." |
+| **ex_1_phase_5**: Test with hotel location queries | 2026-01-07 | N/A | Tests passed 🎉 |
+| **ex_1_phase_5**: Test with meal plan and pricing queries | 2026-01-07 | N/A | Tests passed 🎉 |
+| **ex_1_phase_5**: Test with room comparison queries | 2026-01-07 | N/A | Tests passed 🎉 |
+| **ex_1_phase_5**: Integrate RAG agent with WebSocket API | 2026-01-08 | [41acfff](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/41acffffa02424d534bd1ebc8142a295aabe650a) | Integration validated with `test_websocket_integration.py` |
 
 ---
 
@@ -71,7 +94,8 @@
 
 | Description | Impact | Detected | Status |
 |-------------|--------|----------|--------|
-| _No technical debt registered_ | - | - | - |
+| Agent relies on free tier Gemini API which limits full architecture testing | High | 2026-01-08 | Open |
+| Agent does not fallback to other tools (DB, reports) if RAG fails | High | 2026-01-08 | Open |
 
 ---
 
@@ -130,37 +154,37 @@ When you complete a task, reference the commit like this:
 ### Exercise 1: Hotel Details with RAG
 
 #### Phase 1: Setup & Data Preparation
-- [ ] Install RAG dependencies (`langchain-community`, `chromadb`)
-- [ ] Generate full hotel dataset (50 hotels) using `gen_synthetic_hotels.py`
-- [ ] Verify all hotel files are created (JSON, markdown files)
+- [✅] Install RAG dependencies (`langchain-community`, `chromadb`)
+- [✅] Generate full hotel dataset (50 hotels) using `gen_synthetic_hotels.py`
+- [✅] Verify all hotel files are created (JSON, markdown files)
 
 #### Phase 2: Vector Store Creation
-- [ ] Implement document loader for `hotels.json` (JSONLoader)
-- [ ] Implement document loader for `hotel_details.md` (TextLoader)
-- [ ] Implement document loader for `hotel_rooms.md` (TextLoader)
-- [ ] Configure RecursiveCharacterTextSplitter (chunk_size=1000, overlap=200)
-- [ ] Create GoogleGenerativeAIEmbeddings instance
-- [ ] Build ChromaDB vector store from all documents
-- [ ] Persist vector store to disk for reuse
+- [✅] Implement document loader for `hotels.json` (JSONLoader)
+- [✅] Implement document loader for `hotel_details.md` (TextLoader)
+- [✅] Implement document loader for `hotel_rooms.md` (TextLoader)
+- [✅] Configure RecursiveCharacterTextSplitter (chunk_size=1000, overlap=200)
+- [✅] Create GoogleGenerativeAIEmbeddings instance
+- [✅] Build ChromaDB vector store from all documents
+- [✅] Persist vector store to disk for reuse
 
 #### Phase 3: RAG Chain Implementation
-- [ ] Create ChatGoogleGenerativeAI LLM instance (gemini-2.5-flash-lite, temperature=0)
-- [ ] Implement RetrievalQA chain with vector store
-- [ ] Design system prompt for hotel assistant context
-- [ ] Configure retrieval parameters (k=5 documents)
-- [ ] Test retrieval quality with sample queries
+- [✅] Create ChatGoogleGenerativeAI LLM instance (gemini-2.5-flash-lite, temperature=0)
+- [✅] Implement RetrievalQA chain with vector store
+- [✅] Design system prompt for hotel assistant context
+- [✅] Configure retrieval parameters (k=5 documents)
+- [✅] Test retrieval quality with sample queries
 
 #### Phase 4: Agent Implementation
-- [ ] Create hotel details agent function
+- [✅] Create hotel details agent function
 - [ ] Implement query preprocessing (normalization, validation)
 - [ ] Add response formatting (markdown structure)
 - [ ] Handle edge cases (no results, ambiguous queries)
 
 #### Phase 5: Integration & Testing
-- [ ] Integrate RAG agent with WebSocket API
-- [ ] Test with hotel location queries
-- [ ] Test with meal plan and pricing queries
-- [ ] Test with room comparison queries
+- [✅] Integrate RAG agent with WebSocket API
+- [✅] Test with hotel location queries
+- [✅] Test with meal plan and pricing queries
+- [✅] Test with room comparison queries
 - [ ] Verify performance (response time < 10s)
 - [ ] Compare results with Exercise 0 (should be more accurate)
 
@@ -234,10 +258,10 @@ When you complete a task, reference the commit like this:
 ## 📊 Quick Summary
 
 ```
-📌 Pending:  10
-🔥 In progress: 0
-✅ Completed: 20
-🐛 Technical debt: 0
+📌 Pending:  5
+🔥 In progress: 9
+✅ Completed: 40
+🐛 Technical debt: 2
 🎓 Workshop Exercises: 3 (Exercise 0, 1, 2)
 ```
 
