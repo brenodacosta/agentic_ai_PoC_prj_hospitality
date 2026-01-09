@@ -26,6 +26,13 @@ class Settings(BaseSettings):
     API_HOST: str = Field(default="0.0.0.0")
     API_PORT: int = Field(default=8001)
 
+    # Database settings
+    POSTGRES_HOST: str = Field(default="localhost")
+    POSTGRES_PORT: int = Field(default=5432)
+    POSTGRES_USER: str = Field(default="postgres")
+    POSTGRES_PASSWORD: str = Field(default="postgres")
+    POSTGRES_DB: str = Field(default="bookings_db")
+
     # CORS settings
     CORS_ORIGINS: List[str] = Field(default=["*"])
 

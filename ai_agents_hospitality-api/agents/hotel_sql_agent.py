@@ -3,10 +3,10 @@ import os
 from langchain_community.utilities import SQLDatabase
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_community.agent_toolkits import SQLDatabaseToolkit
-from langchain.agents import create_sql_agent
+from langchain_community.agent_toolkits.sql.base import create_sql_agent
 from langchain.agents.agent_types import AgentType
 
-from util.configuration import PROJECT_ROOT
+from util.configuration import PROJECT_ROOT, settings
 from util.logger_config import logger
 from config.agent_config import get_agent_config
 
@@ -14,9 +14,8 @@ from config.agent_config import get_agent_config
 config = get_agent_config()
 
 # Initialize Database
-db = SQLDatabase.from_uri(
-    "postgresql://postgres:postgres@localhost:5432/bookings_db"
-)
+db_uri = f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
+db = SQLDatabase.from_uri(db_uri)
 
 # Initialize LLM
 llm = ChatGoogleGenerativeAI(
@@ -81,6 +80,8 @@ HOTEL_ROOMS_COUNT = {
     'Cipriani Venice': 75
 }
 
+hotel_capacity_formatted = "\n".join([f"- {k}: {v}" for k, v in HOTEL_ROOMS_COUNT.items()])
+
 SYSTEM_PREFIX = """
 You are an expert hospitality data analyst. You are interacting with a PostgreSQL database bookings_db.
 Your goal is to answer questions about bookings, revenue, occupancy, and other hospitality metrics.
@@ -106,22 +107,23 @@ Process:
 Step 1: Generate the SQL query based on natural language to extract the necessary aggregations (SUM(total_nights), SUM(total_price), etc.).
 Step 2: Execute the query against PostgreSQL, perform any necessary math (like Occupancy or RevPAR calculations using the capacity map), and format the results.
 
-Instructions:
-- When calculating 'Number of Days in the Period':
-    - January = 31
-    - Q1 = 90 days (Jan+Feb+Mar)
-    - 2025 is not a leap year.
-- If querying for a specific month/year, filter `check_in_date` accordingly.
-- Return the final answer in a clear, professional text format.
+Guidelines:
+- When filtering by 'hotel_name', use ILIKE to handle potential capitalization differences (e.g., ILIKE '%Obsidian Tower%').
+- For date calculations (Days_In_Period), use PostgreSQL built-in functions where possible, or use standard calendar days (Jan=31, etc).
+- 2025 is NOT a leap year.
+- Always refer to the Hotel Capacity Map for room counts; do not infer from data.
 
-Expected Queries to Handle:
+
+Example of expected Queries to Handle, including but not limited to:
 - "Tell me the amount of bookings for Obsidian Tower in 2025"
 - "What is the occupancy rate for Imperial Crown in January 2025?"
 - "Show me the total revenue for hotels in Paris in Q1 2025"
 - "Calculate the RevPAR for Grand Victoria in August 2025"
 - "How many guests from Germany stayed at our hotels in 2025?"
 - "Compare bookings by meal plan type across all hotels"
-""".format(hotel_capacity=str(HOTEL_ROOMS_COUNT).replace('{', '{{').replace('}', '}}'))
+
+Return the final answer in a clear, professional text format.
+""".format(hotel_capacity=hotel_capacity_formatted)
 
 try:
     hotel_sql_agent = create_sql_agent(

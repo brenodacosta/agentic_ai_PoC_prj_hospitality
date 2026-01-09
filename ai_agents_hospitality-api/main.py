@@ -37,7 +37,9 @@ EXERCISE_2_AVAILABLE = False
 try:
     # from agents.hotel_simple_agent import handle_hotel_query_simple, load_hotel_data
     # from agents.hotel_rag_agent import handle_hotel_query_rag
-    from agents.hotel_sql_agent import handle_hotel_query_sql, load_hotel_data
+    print("Importing Exercise 2 agent...")
+    from agents.hotel_sql_agent import handle_hotel_query_sql
+    print("Exercise 2 agent imported successfully.")
     # Try to load hotel data to verify everything is set up correctly
     try:
         # load_hotel_data()
