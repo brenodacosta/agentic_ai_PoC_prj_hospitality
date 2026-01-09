@@ -9,6 +9,16 @@ Exercise 0 Implementation:
 - Uses LangChain agent with file context (3 hotels sample)
 - Falls back to hardcoded responses if agent is unavailable
 - Integrates with WebSocket API for real-time chat
+
+Exercise 1 Implementation:
+- Uses LangChain agent with RAG context (full hotel dataset)
+- Optmized for queries consulting data from specific hotels
+- For queries needing detailed info from large dataset ("list all hotels...", "what are the hotels in city...") it leverages tools to fetch relevant data from the whole DB
+
+Exercise 2 Implementation:
+- Uses LangChain agent with SQL database context (hotel bookings)
+- Integrates with WebSocket API for real-time chat
+- Used for handling hotel analytics queries about bookings, revenue, occupancy, etc.
 """
 
 import json
@@ -22,27 +32,28 @@ from fastapi.templating import Jinja2Templates
 from util.logger_config import logger
 from util.configuration import settings, PROJECT_ROOT
 
-# Import Exercise 0 agent
-EXERCISE_0_AVAILABLE = False
+# Import Exercise 2 agent
+EXERCISE_2_AVAILABLE = False
 try:
     # from agents.hotel_simple_agent import handle_hotel_query_simple, load_hotel_data
-    from agents.hotel_rag_agent import handle_hotel_query_rag
+    # from agents.hotel_rag_agent import handle_hotel_query_rag
+    from agents.hotel_sql_agent import handle_hotel_query_sql, load_hotel_data
     # Try to load hotel data to verify everything is set up correctly
     try:
         # load_hotel_data()
-        EXERCISE_0_AVAILABLE = True
-        logger.info("✅ Exercise 0 agent loaded successfully and hotel data verified")
+        EXERCISE_2_AVAILABLE = True
+        logger.info("✅ Exercise 2 agent loaded successfully and hotel data verified")
     except Exception as e:
-        logger.warning(f"Exercise 0 agent code loaded but data/files not ready: {e}")
+        logger.warning(f"Exercise 2 agent code loaded but data/files not ready: {e}")
         logger.warning("Will use hardcoded responses until hotel data is available")
-        EXERCISE_0_AVAILABLE = False
+        EXERCISE_2_AVAILABLE = False
 except ImportError as e:
-    logger.warning(f"Exercise 0 agent not available (ImportError): {e}")
+    logger.warning(f"Exercise 2 agent not available (ImportError): {e}")
     logger.warning("Using hardcoded responses. Install LangChain dependencies if needed.")
-    EXERCISE_0_AVAILABLE = False
+    EXERCISE_2_AVAILABLE = False
 except Exception as e:
-    logger.warning(f"Error loading Exercise 0 agent: {e}. Using hardcoded responses.")
-    EXERCISE_0_AVAILABLE = False
+    logger.warning(f"Error loading Exercise 2 agent: {e}. Using hardcoded responses.")
+    EXERCISE_2_AVAILABLE = False
 
 
 # Hardcoded responses for demo queries
@@ -233,21 +244,21 @@ async def websocket_endpoint(websocket: WebSocket, uuid: str):
                 except json.JSONDecodeError:
                     user_query = data
                 
-                # Get response from Exercise 0 agent or fallback to hardcoded
-                if EXERCISE_0_AVAILABLE:
+                # Get response from Exercise 2 agent or fallback to hardcoded
+                if EXERCISE_2_AVAILABLE:
                     try:
-                        logger.info(f"Using Exercise 0 agent for query: {user_query[:100]}...")
+                        logger.info(f"Using Exercise 2 agent for query: {user_query[:100]}...")
                         # response_content = await handle_hotel_query_simple(user_query)
-                        response_content = await handle_hotel_query_rag(user_query)
-                        # logger.info(f"✅ Exercise 0 agent response generated successfully for {uuid}")
-                        logger.info(f"✅ Exercise 1 agent response generated successfully for {uuid}")
+                        response_content = await handle_hotel_query_sql(user_query)
+                        # logger.info(f"✅ Exercise 2 agent response generated successfully for {uuid}")
+                        logger.info(f"✅ Exercise 2 agent response generated successfully for {uuid}")
                     except Exception as e:
-                        logger.error(f"❌ Error in Exercise 0 agent: {e}", exc_info=True)
+                        logger.error(f"❌ Error in Exercise 2 agent: {e}", exc_info=True)
                         logger.warning(f"Falling back to hardcoded response for {uuid}")
                         response_content = find_matching_response(user_query)
                 else:
                     # Fallback to hardcoded responses
-                    logger.debug(f"Using hardcoded responses (Exercise 0 not available) for {uuid}")
+                    logger.debug(f"Using hardcoded responses (Exercise 2 not available) for {uuid}")
                     response_content = find_matching_response(user_query)
                 
                 # Send response back to client
