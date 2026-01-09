@@ -8,15 +8,11 @@
 
 | Task | Priority | Started | Notes |
 |------|----------|---------|-------|
-| Implement query preprocessing (normalization, validation) | 🟡 Medium | 2026-01-08 | Ex 1 Phase 4 |
-| Add response formatting (markdown structure) | 🟢 Low | 2026-01-08 | Ex 1 Phase 4 |
-| Handle edge cases (no results, ambiguous queries) | 🔴 High | 2026-01-08 | Ex 1 Phase 4 |
-| Verify performance (response time < 10s) | 🟡 Medium | 2026-01-08 | Ex 1 Phase 5 |
-| Compare results with Exercise 0 (should be more accurate) | 🟢 Low | 2026-01-08 | Ex 1 Phase 5 |
-| Tune chunk size and overlap if needed | 🟢 Low | 2026-01-08 | Ex 1 Phase 6 |
-| Optimize retrieval k parameter | 🟢 Low | 2026-01-08 | Ex 1 Phase 6 |
-| Add caching for frequent queries (optional) | 🟢 Low | 2026-01-08 | Ex 1 Phase 6 |
-| Document vector store persistence strategy | 🟢 Low | 2026-01-08 | Ex 1 Phase 6 |
+| Create SQLDatabaseToolkit with database and LLM | 🔴 High | 2026-01-09 | Ex 2 Phase 3 |
+| Implement create_sql_agent with proper system prompt | 🔴 High | 2026-01-09 | Ex 2 Phase 3 |
+| Configure agent for hospitality context | 🟡 Medium | 2026-01-09 | Ex 2 Phase 3 |
+| Add custom system prompt explaining booking schema | 🟡 Medium | 2026-01-09 | Ex 2 Phase 3 |
+| Test agent with simple queries (booking counts) | 🟡 Medium | 2026-01-09 | Ex 2 Phase 3 |
 
 ---
 
@@ -25,21 +21,23 @@
 ### High Priority
 | # | Task | Created | Context |
 |---|------|--------|---------|
-| 1 | **ex_2_phase_1**: Start PostgreSQL database using `./start-app.sh --no_ai_agent` | 2026-01-08 | bookings-db/ |
-| 2 | **ex_2_phase_1**: Install SQL dependencies (`langchain-community`, `psycopg2-binary`) | 2026-01-08 | ai_agents_hospitality-api/ |
-| 3 | **ex_2_phase_1**: Verify database connection (test connection string) | 2026-01-08 | ai_agents_hospitality-api/ |
-| 4 | **ex_2_phase_1**: Inspect database schema and understand table structure | 2026-01-08 | bookings-db/ |
-| 5 | **ex_2_phase_1**: Load sample booking data to test queries | 2026-01-08 | bookings-db/ |
+| 1 | **ex_1_phase_4**: Handle edge cases (no results, ambiguous queries) | 2026-01-08 | agents/hotel_rag_agent.py |
 
 ### Medium Priority
 | # | Task | Created | Context |
 |---|------|--------|---------|
-| - | _No tasks_ | - | - |
+| 1 | **ex_1_phase_4**: Implement query preprocessing (normalization, validation) | 2026-01-08 | agents/hotel_rag_agent.py |
+| 2 | **ex_1_phase_5**: Verify performance (response time < 10s) | 2026-01-08 | - |
 
 ### Low Priority
 | # | Task | Created | Context |
 |---|------|--------|---------|
-| - | _No tasks_ | - | - |
+| 1 | **ex_1_phase_4**: Add response formatting (markdown structure) | 2026-01-08 | agents/hotel_rag_agent.py |
+| 2 | **ex_1_phase_5**: Compare results with Exercise 0 (should be more accurate) | 2026-01-08 | - |
+| 3 | **ex_1_phase_6**: Tune chunk size and overlap if needed | 2026-01-08 | agents/hotel_rag_agent.py |
+| 4 | **ex_1_phase_6**: Optimize retrieval k parameter | 2026-01-08 | agents/hotel_rag_agent.py |
+| 5 | **ex_1_phase_6**: Add caching for frequent queries (optional) | 2026-01-08 | - |
+| 6 | **ex_1_phase_6**: Document vector store persistence strategy | 2026-01-08 | - |
 
 ---
 
@@ -87,6 +85,15 @@
 | **ex_1_phase_5**: Test with meal plan and pricing queries | 2026-01-07 | N/A | Tests passed 🎉 |
 | **ex_1_phase_5**: Test with room comparison queries | 2026-01-07 | N/A | Tests passed 🎉 |
 | **ex_1_phase_5**: Integrate RAG agent with WebSocket API | 2026-01-08 | [41acfff](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/41acffffa02424d534bd1ebc8142a295aabe650a) | Integration validated with `test_websocket_integration.py` |
+| **ex_2_phase_1**: Start PostgreSQL database using `./start-app.sh --no_ai_agent` | 2026-01-08 | N/A | - |
+| **ex_2_phase_1**: Install SQL dependencies (`langchain-community`, `psycopg2-binary`) | 2026-01-08 | N/A | - |
+| **ex_2_phase_1**: Verify database connection (test connection string) | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
+| **ex_2_phase_1**: Inspect database schema and understand table structure | 2026-01-08 | N/A | - |
+| **ex_2_phase_1**: Load sample booking data to test queries | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
+| **ex_2_phase_2**: Create SQLDatabase instance from connection URI | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
+| **ex_2_phase_2**: Test basic SQL queries manually (SELECT, COUNT, SUM) | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
+| **ex_2_phase_2**: Verify database schema introspection works | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
+| **ex_2_phase_2**: Test date filtering and aggregation queries | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
 
 ---
 
@@ -199,17 +206,17 @@ When you complete a task, reference the commit like this:
 ### Exercise 2: Booking Analytics with SQL Agent
 
 #### Phase 1: Setup & Database Connection
-- [ ] Start PostgreSQL database using `./start-app.sh --no_ai_agent`
-- [ ] Install SQL dependencies (`langchain-community`, `psycopg2-binary`)
-- [ ] Verify database connection (test connection string)
-- [ ] Inspect database schema and understand table structure
-- [ ] Load sample booking data to test queries
+- [✅] Start PostgreSQL database using `./start-app.sh --no_ai_agent`
+- [✅] Install SQL dependencies (`langchain-community`, `psycopg2-binary`)
+- [✅] Verify database connection (test connection string)
+- [✅] Inspect database schema and understand table structure
+- [✅] Load sample booking data to test queries
 
 #### Phase 2: SQL Database Integration
-- [ ] Create SQLDatabase instance from connection URI
-- [ ] Test basic SQL queries manually (SELECT, COUNT, SUM)
-- [ ] Verify database schema introspection works
-- [ ] Test date filtering and aggregation queries
+- [✅] Create SQLDatabase instance from connection URI
+- [✅] Test basic SQL queries manually (SELECT, COUNT, SUM)
+- [✅] Verify database schema introspection works
+- [✅] Test date filtering and aggregation queries
 
 #### Phase 3: SQL Agent Implementation
 - [ ] Create SQLDatabaseToolkit with database and LLM
@@ -258,9 +265,9 @@ When you complete a task, reference the commit like this:
 ## 📊 Quick Summary
 
 ```
-📌 Pending:  5
-🔥 In progress: 9
-✅ Completed: 40
+📌 Pending:  9
+🔥 In progress: 5
+✅ Completed: 49
 🐛 Technical debt: 2
 🎓 Workshop Exercises: 3 (Exercise 0, 1, 2)
 ```
