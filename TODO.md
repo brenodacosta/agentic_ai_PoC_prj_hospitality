@@ -103,6 +103,8 @@
 |-------------|--------|----------|--------|
 | Agent relies on free tier Gemini API which limits full architecture testing | High | 2026-01-08 | Open |
 | Agent does not fallback to other tools (DB, reports) if RAG fails | High | 2026-01-08 | Open |
+| RAG agent tools (HotelDatabaseHelper) are coupled in same file, violating separation of concerns | Low | 2026-01-09 | Open |
+| Unused/Commented-out tools in RAG agent (tool_list_hotels, tool_get_prices...) adding clutter | Low | 2026-01-09 | Open |
 
 ---
 
@@ -268,7 +270,7 @@ When you complete a task, reference the commit like this:
 📌 Pending:  9
 🔥 In progress: 5
 ✅ Completed: 49
-🐛 Technical debt: 2
+🐛 Technical debt: 4
 🎓 Workshop Exercises: 3 (Exercise 0, 1, 2)
 ```
 
