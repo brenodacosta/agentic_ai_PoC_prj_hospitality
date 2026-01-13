@@ -8,10 +8,14 @@
 
 | Task | Priority | Started | Notes |
 |------|----------|---------|-------|
-| Implement occupancy rate calculation (two-step: query + formula) | 🔴 High | 2026-01-12 | Ex 2 Phase 4 |
-| Implement total revenue aggregation | 🔴 High | 2026-01-12 | Ex 2 Phase 4 |
-| Implement RevPAR calculation (revenue / available room-nights) | 🔴 High | 2026-01-12 | Ex 2 Phase 4 |
-| Handle edge cases (no bookings, division by zero) | 🟡 Medium | 2026-01-12 | Ex 2 Phase 4 |
+| **ex_2_phase_5**: Add query validation before execution | Medium | 2026-01-13 | agents/booking_sql_agent.py |
+| **ex_2_phase_5**: Add error handling for SQL syntax errors | Medium | 2026-01-13 | agents/booking_sql_agent.py |
+| **ex_2_phase_6**: Test with date range queries (months, quarters, years) | Medium | 2026-01-13 | - |
+| **ex_2_phase_6**: Test with hotel-specific filters | Medium | 2026-01-13 | - |
+| **ex_2_phase_6**: Test with guest country/city filters | Medium | 2026-01-13 | - |
+| **ex_2_phase_6**: Test with meal plan comparisons | Medium | 2026-01-13 | - |
+| **ex_2_phase_6**: Verify occupancy and RevPAR calculations are accurate | Medium | 2026-01-13 | - |
+| **ex_2_phase_6**: Test with edge cases (empty results, invalid dates) | Medium | 2026-01-13 | - |
 
 ---
 
@@ -21,16 +25,12 @@
 | # | Task | Created | Context |
 |---|------|--------|---------|
 | 1 | **ex_1_phase_4**: Handle edge cases (no results, ambiguous queries) | 2026-01-08 | agents/hotel_rag_agent.py |
-| 2 | **ex_2_phase_5**: Implement Step 1: Generate SQL from natural language | 2026-01-12 | agents/hotel_sql_agent.py |
-| 3 | **ex_2_phase_5**: Implement Step 2: Execute query and format results | 2026-01-12 | agents/hotel_sql_agent.py |
 
 ### Medium Priority
 | # | Task | Created | Context |
 |---|------|--------|---------|
 | 1 | **ex_1_phase_4**: Implement query preprocessing (normalization, validation) | 2026-01-08 | agents/hotel_rag_agent.py |
 | 2 | **ex_1_phase_5**: Verify performance (response time < 10s) | 2026-01-08 | - |
-| 3 | **ex_2_phase_5**: Add query validation before execution | 2026-01-12 | agents/hotel_sql_agent.py |
-| 4 | **ex_2_phase_5**: Add error handling for SQL syntax errors | 2026-01-12 | agents/hotel_sql_agent.py |
 
 ### Low Priority
 | # | Task | Created | Context |
@@ -41,7 +41,6 @@
 | 4 | **ex_1_phase_6**: Optimize retrieval k parameter | 2026-01-08 | agents/hotel_rag_agent.py |
 | 5 | **ex_1_phase_6**: Add caching for frequent queries (optional) | 2026-01-08 | - |
 | 6 | **ex_1_phase_6**: Document vector store persistence strategy | 2026-01-08 | - |
-| 7 | **ex_2_phase_5**: Implement result formatting (tables, markdown) | 2026-01-12 | agents/hotel_sql_agent.py |
 
 ---
 
@@ -103,6 +102,14 @@
 | **ex_2_phase_3**: Configure agent for hospitality context | 2026-01-09 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | First functional SQL Agent for simple queries |
 | **ex_2_phase_3**: Add custom system prompt explaining booking schema | 2026-01-09 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | First functional SQL Agent for simple queries |
 | **ex_2_phase_3**: Test agent with simple queries (booking counts) | 2026-01-09 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | Test passed returning booking counts for specific hotel |
+| **ex_2_phase_4**: Implement occupancy rate calculation (two-step: query + formula) | 2026-01-12 | [bb15c8b](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/bb15c8b3bcfde32e8f33f7063b5d2d4ea8c54c47) | Implemented with converting natural language to SQL query and returning formatted result |
+| **ex_2_phase_4**: Implement total revenue aggregation | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151c) | Tools created to help agent to perform calculations with retrieved data |
+| **ex_2_phase_4**: Implement RevPAR calculation (revenue / available room-nights) | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151c) | Tools created to help agent to perform calculations with retrieved data |
+| **ex_2_phase_4**: Handle edge cases (no bookings, division by zero) | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151c) | Functions prevent math edge cases and no data errors |
+| **ex_2_phase_5**: Implement Step 1: Generate SQL from natural language | 2026-01-12 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | First agent handling simple queries |
+| **ex_2_phase_5**: Implement Step 2: Execute query and format results | 2026-01-12 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | first agent handling simple queries |
+| **ex_2_phase_5**: Implement result formatting (tables, markdown) | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151c) | Results are formatted by default by the agent |
+| **ex_2_phase_7**: Integrate SQL agent with WebSocket API | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151) | Booking SQL Agent integrated with WebSocket, pending orchestrator |
 
 ---
 
@@ -237,17 +244,17 @@ When you complete a task, reference the commit like this:
 - [✅] Test agent with simple queries (booking counts)
 
 #### Phase 4: Analytics Calculations
-- [ ] Implement bookings count query logic
-- [ ] Implement occupancy rate calculation (two-step: query + formula)
-- [ ] Implement total revenue aggregation
-- [ ] Implement RevPAR calculation (revenue / available room-nights)
-- [ ] Handle edge cases (no bookings, division by zero)
+- [✅] Implement bookings count query logic
+- [✅] Implement occupancy rate calculation (two-step: query + formula)
+- [✅] Implement total revenue aggregation
+- [✅] Implement RevPAR calculation (revenue / available room-nights)
+- [✅] Handle edge cases (no bookings, division by zero)
 
 #### Phase 5: Two-Step Query Process
-- [ ] Implement Step 1: Generate SQL from natural language
-- [ ] Implement Step 2: Execute query and format results
+- [✅] Implement Step 1: Generate SQL from natural language
+- [✅] Implement Step 2: Execute query and format results
 - [ ] Add query validation before execution
-- [ ] Implement result formatting (tables, markdown)
+- [✅] Implement result formatting (tables, markdown)
 - [ ] Add error handling for SQL syntax errors
 
 #### Phase 6: Advanced Queries & Testing
@@ -259,7 +266,7 @@ When you complete a task, reference the commit like this:
 - [ ] Test with edge cases (empty results, invalid dates)
 
 #### Phase 7: Integration & Error Handling
-- [ ] Integrate SQL agent with WebSocket API
+- [✅] Integrate SQL agent with WebSocket API
 - [ ] Add comprehensive error handling (connection errors, query errors)
 - [ ] Implement query timeout protection
 - [ ] Add logging for debugging SQL generation
@@ -276,9 +283,9 @@ When you complete a task, reference the commit like this:
 ## 📊 Quick Summary
 
 ```
-📌 Pending:  14
-🔥 In progress: 4
-✅ Completed: 54
+📌 Pending:  9
+🔥 In progress: 8
+✅ Completed: 62
 🐛 Technical debt: 4
 🎓 Workshop Exercises: 3 (Exercise 0, 1, 2)
 ```
