@@ -71,9 +71,12 @@ Hotel Capacity Map (Number of Rooms per Hotel):
 
 Process:
 Step 1: Generate the SQL query based on natural language to extract the necessary aggregations (SUM(total_nights), SUM(total_price), etc.).
-Step 2: Execute the query against PostgreSQL to get the raw numbers.
-Step 3: Call the appropriate tool (`calculate_occupancy_rate` or `calculate_revpar`) with the SQL result, room count (from the map below), and number of days.
-Step 4: Format the final answer using the tool's output.
+Step 2: Validate the generated SQL query using the `validate_sql_query` tool.
+    - If valid: Proceed to Step 3.
+    - If invalid or a syntax error occurs: Analyze the error message, CORRECT the SQL query, and RE-VALIDATE.
+Step 3: Execute the validated query against PostgreSQL to get the raw numbers.
+Step 4: Call the appropriate tool (`calculate_occupancy_rate` or `calculate_revpar`) with the SQL result, room count (from the map below), and number of days.
+Step 5: Format the final answer using the tool's output.
 
 Guidelines:
 - When filtering by 'hotel_name', use ILIKE to handle potential capitalization differences (e.g., ILIKE '%Obsidian Tower%').
@@ -81,6 +84,7 @@ Guidelines:
 - 2025 is NOT a leap year.
 - Always refer to the Hotel Capacity Map for room counts; do not infer from data.
 - NEVER perform complex division or multiplication for Occupancy/RevPAR in your head. USE THE TOOLS.
+- ALWAYS validate your SQL (Step 2) before executing it (Step 3).
 
 Example of expected Queries to Handle, including but not limited to:
 - "Tell me the amount of bookings for Obsidian Tower in 2025"
@@ -90,8 +94,40 @@ Example of expected Queries to Handle, including but not limited to:
 - "How many guests from Germany stayed at our hotels in 2025?"
 - "Compare bookings by meal plan type across all hotels"
 
+IMPORTANT:
+- ALWAYS end your thought process with "Final Answer: [Your Answer]".
+- If you have the answer, do not just output it. You MUST format it.
+
 Return the final answer in a clear, professional text format.
 """.format(hotel_capacity=hotel_capacity_formatted)
+
+class SQLQueryValidator:
+    """
+    Validates SQL queries before execution.
+    """
+    @staticmethod
+    @tool
+    def validate_sql_query(query: str) -> str:
+        """
+        Validates a SQL query by running EXPLAIN. 
+        Use this tool to check the syntax of your generated SQL before executing it.
+        Returns "Valid" if the query syntax is correct.
+        Returns the error message if the query contains syntax errors.
+        """
+        try:
+            # Check for typically dangerous operations just in case (e.g. DROP, DELETE)
+            # The agent should be read-only, but being safe is better.
+            forbidden = ["DROP", "DELETE", "TRUNCATE", "UPDATE", "INSERT", "ALTER", "GRANT", "REVOKE"]
+            if any(cmd in query.upper() for cmd in forbidden):
+                return "Error: Data modification commands are strictly forbidden."
+
+            # Use the existing db connection to run EXPLAIN
+            # This checks syntax and table existence without running the full query
+            db.run(f"EXPLAIN {query}")
+            return "Valid"
+        except Exception as e:
+            # Capture and return the specific SQL error so the agent can fix it
+            return f"Invalid SQL Syntax: {str(e)}"
 
 class HotelFinancialCalculator:
     
@@ -194,8 +230,15 @@ try:
             agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
             prefix=SYSTEM_PREFIX,
             handle_parsing_errors=True,
-            extra_tools=[HotelFinancialCalculator.calculate_occupancy_rate, HotelFinancialCalculator.calculate_revpar]
-        )   
+            extra_tools=[
+                HotelFinancialCalculator.calculate_occupancy_rate, 
+                HotelFinancialCalculator.calculate_revpar,
+                SQLQueryValidator.validate_sql_query
+            ]
+        )
+    # Explicitly force handle_parsing_errors in case the wrapper ignored it
+    if hotel_sql_agent:
+        hotel_sql_agent.handle_parsing_errors = True
 except Exception as e:
     logger.error(f"Error initializing hotel_sql_agent: {e}")
     hotel_sql_agent = None
