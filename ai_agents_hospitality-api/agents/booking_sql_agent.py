@@ -10,7 +10,7 @@ from langchain_core.tools import tool
 
 from util.configuration import settings
 from util.logger_config import logger
-from util.sql_agent_util import get_hotel_capacity, get_hotels_data_path
+from util.booking_sql_agent_util import get_hotel_capacity, get_hotels_data_path
 from config.agent_config import get_agent_config
 
 # Load configuration from centralized config system
