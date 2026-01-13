@@ -8,11 +8,10 @@
 
 | Task | Priority | Started | Notes |
 |------|----------|---------|-------|
-| Create SQLDatabaseToolkit with database and LLM | 🔴 High | 2026-01-09 | Ex 2 Phase 3 |
-| Implement create_sql_agent with proper system prompt | 🔴 High | 2026-01-09 | Ex 2 Phase 3 |
-| Configure agent for hospitality context | 🟡 Medium | 2026-01-09 | Ex 2 Phase 3 |
-| Add custom system prompt explaining booking schema | 🟡 Medium | 2026-01-09 | Ex 2 Phase 3 |
-| Test agent with simple queries (booking counts) | 🟡 Medium | 2026-01-09 | Ex 2 Phase 3 |
+| Implement occupancy rate calculation (two-step: query + formula) | 🔴 High | 2026-01-12 | Ex 2 Phase 4 |
+| Implement total revenue aggregation | 🔴 High | 2026-01-12 | Ex 2 Phase 4 |
+| Implement RevPAR calculation (revenue / available room-nights) | 🔴 High | 2026-01-12 | Ex 2 Phase 4 |
+| Handle edge cases (no bookings, division by zero) | 🟡 Medium | 2026-01-12 | Ex 2 Phase 4 |
 
 ---
 
@@ -22,12 +21,16 @@
 | # | Task | Created | Context |
 |---|------|--------|---------|
 | 1 | **ex_1_phase_4**: Handle edge cases (no results, ambiguous queries) | 2026-01-08 | agents/hotel_rag_agent.py |
+| 2 | **ex_2_phase_5**: Implement Step 1: Generate SQL from natural language | 2026-01-12 | agents/hotel_sql_agent.py |
+| 3 | **ex_2_phase_5**: Implement Step 2: Execute query and format results | 2026-01-12 | agents/hotel_sql_agent.py |
 
 ### Medium Priority
 | # | Task | Created | Context |
 |---|------|--------|---------|
 | 1 | **ex_1_phase_4**: Implement query preprocessing (normalization, validation) | 2026-01-08 | agents/hotel_rag_agent.py |
 | 2 | **ex_1_phase_5**: Verify performance (response time < 10s) | 2026-01-08 | - |
+| 3 | **ex_2_phase_5**: Add query validation before execution | 2026-01-12 | agents/hotel_sql_agent.py |
+| 4 | **ex_2_phase_5**: Add error handling for SQL syntax errors | 2026-01-12 | agents/hotel_sql_agent.py |
 
 ### Low Priority
 | # | Task | Created | Context |
@@ -38,6 +41,7 @@
 | 4 | **ex_1_phase_6**: Optimize retrieval k parameter | 2026-01-08 | agents/hotel_rag_agent.py |
 | 5 | **ex_1_phase_6**: Add caching for frequent queries (optional) | 2026-01-08 | - |
 | 6 | **ex_1_phase_6**: Document vector store persistence strategy | 2026-01-08 | - |
+| 7 | **ex_2_phase_5**: Implement result formatting (tables, markdown) | 2026-01-12 | agents/hotel_sql_agent.py |
 
 ---
 
@@ -94,6 +98,11 @@
 | **ex_2_phase_2**: Test basic SQL queries manually (SELECT, COUNT, SUM) | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
 | **ex_2_phase_2**: Verify database schema introspection works | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
 | **ex_2_phase_2**: Test date filtering and aggregation queries | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
+| **ex_2_phase_3**: Create SQLDatabaseToolkit with database and LLM | 2026-01-09 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | First functional SQL Agent for simple queries |
+| **ex_2_phase_3**: Implement create_sql_agent with proper system prompt | 2026-01-09 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | First functional SQL Agent for simple queries |
+| **ex_2_phase_3**: Configure agent for hospitality context | 2026-01-09 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | First functional SQL Agent for simple queries |
+| **ex_2_phase_3**: Add custom system prompt explaining booking schema | 2026-01-09 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | First functional SQL Agent for simple queries |
+| **ex_2_phase_3**: Test agent with simple queries (booking counts) | 2026-01-09 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | Test passed returning booking counts for specific hotel |
 
 ---
 
@@ -221,11 +230,11 @@ When you complete a task, reference the commit like this:
 - [✅] Test date filtering and aggregation queries
 
 #### Phase 3: SQL Agent Implementation
-- [ ] Create SQLDatabaseToolkit with database and LLM
-- [ ] Implement create_sql_agent with proper system prompt
-- [ ] Configure agent for hospitality context (hotel names, dates, metrics)
-- [ ] Add custom system prompt explaining booking schema
-- [ ] Test agent with simple queries (booking counts)
+- [✅] Create SQLDatabaseToolkit with database and LLM
+- [✅] Implement create_sql_agent with proper system prompt
+- [✅] Configure agent for hospitality context (hotel names, dates, metrics)
+- [✅] Add custom system prompt explaining booking schema
+- [✅] Test agent with simple queries (booking counts)
 
 #### Phase 4: Analytics Calculations
 - [ ] Implement bookings count query logic
@@ -267,9 +276,9 @@ When you complete a task, reference the commit like this:
 ## 📊 Quick Summary
 
 ```
-📌 Pending:  9
-🔥 In progress: 5
-✅ Completed: 49
+📌 Pending:  14
+🔥 In progress: 4
+✅ Completed: 54
 🐛 Technical debt: 4
 🎓 Workshop Exercises: 3 (Exercise 0, 1, 2)
 ```
