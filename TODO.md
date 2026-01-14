@@ -8,14 +8,10 @@
 
 | Task | Priority | Started | Notes |
 |------|----------|---------|-------|
-| **ex_2_phase_5**: Add query validation before execution | Medium | 2026-01-13 | agents/booking_sql_agent.py |
-| **ex_2_phase_5**: Add error handling for SQL syntax errors | Medium | 2026-01-13 | agents/booking_sql_agent.py |
-| **ex_2_phase_6**: Test with date range queries (months, quarters, years) | Medium | 2026-01-13 | - |
-| **ex_2_phase_6**: Test with hotel-specific filters | Medium | 2026-01-13 | - |
-| **ex_2_phase_6**: Test with guest country/city filters | Medium | 2026-01-13 | - |
-| **ex_2_phase_6**: Test with meal plan comparisons | Medium | 2026-01-13 | - |
-| **ex_2_phase_6**: Verify occupancy and RevPAR calculations are accurate | Medium | 2026-01-13 | - |
-| **ex_2_phase_6**: Test with edge cases (empty results, invalid dates) | Medium | 2026-01-13 | - |
+| **ex_2_phase_7**: Implement query timeout protection | Medium | 2026-01-14 | - |
+| **ex_2_phase_7**: Add logging for debugging SQL generation | Medium | 2026-01-14 | - |
+| **ex_2_phase_8**: Optimize system prompt for better SQL generation | Medium | 2026-01-14 | - |
+| **ex_2_phase_8**: Add query result caching for common queries (optional) | Low | 2026-01-14 | - |
 
 ---
 
@@ -110,6 +106,15 @@
 | **ex_2_phase_5**: Implement Step 2: Execute query and format results | 2026-01-12 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | first agent handling simple queries |
 | **ex_2_phase_5**: Implement result formatting (tables, markdown) | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151c) | Results are formatted by default by the agent |
 | **ex_2_phase_7**: Integrate SQL agent with WebSocket API | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151) | Booking SQL Agent integrated with WebSocket, pending orchestrator |
+| **ex_2_phase_5**: Add query validation before execution | 2026-01-13 | [2abf679](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2abf679fac3cd65ad52fa310f91d2443c001eed3) | New function created as a tool to validate the SQL query before it is executed |
+| **ex_2_phase_5**: Add error handling for SQL syntax errors | 2026-01-13 | [2abf679](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2abf679fac3cd65ad52fa310f91d2443c001eed3) | SQL errors are handled Interally via the model before the final answer |
+| **ex_2_phase_6**: Test with date range queries (months, quarters, years) | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
+| **ex_2_phase_6**: Test with hotel-specific filters | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
+| **ex_2_phase_6**: Test with guest country/city filters | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
+| **ex_2_phase_6**: Test with meal plan comparisons | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
+| **ex_2_phase_6**: Verify occupancy and RevPAR calculations are accurate | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
+| **ex_2_phase_6**: Test with edge cases (empty results, invalid dates) | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
+| **ex_2_phase_7**: Test end-to-end with WebSocket interface | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
 
 ---
 
@@ -253,24 +258,24 @@ When you complete a task, reference the commit like this:
 #### Phase 5: Two-Step Query Process
 - [✅] Implement Step 1: Generate SQL from natural language
 - [✅] Implement Step 2: Execute query and format results
-- [ ] Add query validation before execution
+- [✅] Add query validation before execution
 - [✅] Implement result formatting (tables, markdown)
-- [ ] Add error handling for SQL syntax errors
+- [✅] Add error handling for SQL syntax errors
 
 #### Phase 6: Advanced Queries & Testing
-- [ ] Test with date range queries (months, quarters, years)
-- [ ] Test with hotel-specific filters
-- [ ] Test with guest country/city filters
-- [ ] Test with meal plan comparisons
-- [ ] Verify occupancy and RevPAR calculations are accurate
-- [ ] Test with edge cases (empty results, invalid dates)
+- [✅] Test with date range queries (months, quarters, years)
+- [✅] Test with hotel-specific filters
+- [✅] Test with guest country/city filters
+- [✅] Test with meal plan comparisons
+- [✅] Verify occupancy and RevPAR calculations are accurate
+- [✅] Test with edge cases (empty results, invalid dates)
 
 #### Phase 7: Integration & Error Handling
 - [✅] Integrate SQL agent with WebSocket API
 - [ ] Add comprehensive error handling (connection errors, query errors)
 - [ ] Implement query timeout protection
 - [ ] Add logging for debugging SQL generation
-- [ ] Test end-to-end with WebSocket interface
+- [✅] Test end-to-end with WebSocket interface
 
 #### Phase 8: Optimization & Documentation
 - [ ] Optimize system prompt for better SQL generation
@@ -284,8 +289,8 @@ When you complete a task, reference the commit like this:
 
 ```
 📌 Pending:  9
-🔥 In progress: 8
-✅ Completed: 62
+🔥 In progress: 4
+✅ Completed: 71
 🐛 Technical debt: 4
 🎓 Workshop Exercises: 3 (Exercise 0, 1, 2)
 ```
