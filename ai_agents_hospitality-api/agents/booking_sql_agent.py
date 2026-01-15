@@ -1,5 +1,7 @@
 import asyncio
 import os
+import hashlib
+from collections import OrderedDict
 from typing import Union
 from langchain_community.utilities import SQLDatabase
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -74,7 +76,7 @@ Step 1: Generate the SQL query based on natural language to extract the necessar
 Step 2: Validate the generated SQL query using the `validate_sql_query` tool.
     - If valid: Proceed to Step 3.
     - If invalid or a syntax error occurs: Analyze the error message, CORRECT the SQL query, and RE-VALIDATE.
-Step 3: Execute the validated query against PostgreSQL to get the raw numbers.
+Step 3: Execute the validated query using `execute_sql_with_cache` tool (DO NOT use `sql_db_query`).
 Step 4: Call the appropriate tool (`calculate_occupancy_rate` or `calculate_revpar`) with the SQL result, room count (from the map below), and number of days.
 Step 5: Format the final answer using the tool's output.
 
@@ -85,6 +87,7 @@ Guidelines:
 - Always refer to the Hotel Capacity Map for room counts; do not infer from data.
 - NEVER perform complex division or multiplication for Occupancy/RevPAR in your head. USE THE TOOLS.
 - ALWAYS validate your SQL (Step 2) before executing it (Step 3).
+- ALWAYS use `execute_sql_with_cache` for query execution to enable caching and logging.
 
 Example of expected Queries to Handle, including but not limited to:
 - "Tell me the amount of bookings for Obsidian Tower in 2025"
@@ -98,13 +101,26 @@ IMPORTANT:
 - ALWAYS end your thought process with "Final Answer: [Your Answer]".
 - If you have the answer, do not just output it. You MUST format it.
 
-Return the final answer in a clear, professional text format.
+Return the final answer in a clear, professional text format, using markdown tables and bullet points to enhance readability.
 """.format(hotel_capacity=hotel_capacity_formatted)
 
-class SQLQueryValidator:
+class SQLQueryManager:
     """
-    Validates SQL queries before execution.
+    Manages SQL query validation, execution, and caching.
     """
+    _cache = OrderedDict()
+    MAX_CACHE_SIZE = 5
+
+    @staticmethod
+    def _get_query_hash(query: str) -> str:
+        """Generates a simple hash for the query."""
+        return hashlib.md5(query.strip().encode()).hexdigest()
+
+    @staticmethod
+    def _log_query(query: str):
+        """Logs the generated SQL query."""
+        logger.info(f"Generated SQL Query: {query}")
+
     @staticmethod
     @tool
     def validate_sql_query(query: str) -> str:
@@ -114,6 +130,7 @@ class SQLQueryValidator:
         Returns "Valid" if the query syntax is correct.
         Returns the error message if the query contains syntax errors.
         """
+        SQLQueryManager._log_query(query)
         try:
             # Check for typically dangerous operations just in case (e.g. DROP, DELETE)
             # The agent should be read-only, but being safe is better.
@@ -128,6 +145,38 @@ class SQLQueryValidator:
         except Exception as e:
             # Capture and return the specific SQL error so the agent can fix it
             return f"Invalid SQL Syntax: {str(e)}"
+
+    @staticmethod
+    @tool
+    def execute_sql_with_cache(query: str) -> str:
+        """
+        Executes a SQL query with LRU caching.
+        Use this tool to execute the validated SQL query against the database.
+        Returns the query result.
+        """
+        query_hash = SQLQueryManager._get_query_hash(query)
+        
+        # Check cache
+        if query_hash in SQLQueryManager._cache:
+            logger.info(f"Cache Hit for query: {query}")
+            SQLQueryManager._cache.move_to_end(query_hash)
+            return SQLQueryManager._cache[query_hash]["result"]
+            
+        # Execute
+        try:
+             # Use the global db instance
+             result = db.run(query)
+             
+             # Store in cache
+             SQLQueryManager._cache[query_hash] = {"query": query, "result": result}
+             
+             # Enforce LRU size
+             if len(SQLQueryManager._cache) > SQLQueryManager.MAX_CACHE_SIZE:
+                 SQLQueryManager._cache.popitem(last=False) # pop first (Least Recently Used)
+                 
+             return result
+        except Exception as e:
+            return f"Error executing SQL: {e}"
 
 class HotelFinancialCalculator:
     
@@ -230,10 +279,12 @@ try:
             agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
             prefix=SYSTEM_PREFIX,
             handle_parsing_errors=True,
+            max_execution_time=30,
             extra_tools=[
                 HotelFinancialCalculator.calculate_occupancy_rate, 
                 HotelFinancialCalculator.calculate_revpar,
-                SQLQueryValidator.validate_sql_query
+                SQLQueryManager.validate_sql_query,
+                SQLQueryManager.execute_sql_with_cache
             ]
         )
     # Explicitly force handle_parsing_errors in case the wrapper ignored it
