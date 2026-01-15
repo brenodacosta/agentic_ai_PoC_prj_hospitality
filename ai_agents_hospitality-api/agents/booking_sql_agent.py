@@ -9,8 +9,10 @@ from util.logger_config import logger
 from util.booking_sql_agent_util import (
     get_hotel_capacity, 
     get_hotels_data_path, 
-    SQLQueryManager, 
-    HotelFinancialCalculator, 
+    tool_validate_sql_query,
+    tool_execute_sql_with_cache,
+    tool_calculate_occupancy_rate,
+    tool_calculate_revpar,
     db
 )
 from config.agent_config import get_agent_config
@@ -56,11 +58,11 @@ Key Metrics Definitions:
 2. Total Revenue: Sum of 'total_price'.
 3. Occupancy Rate (%): 
     - Logic: Retrieve 'SUM(total_nights)' via SQL.
-    - Calculation: Use the tool `calculate_occupancy_rate`. DO NOT calculate internally.
+    - Calculation: Use the tool `tool_calculate_occupancy_rate`. DO NOT calculate internally.
     - Inputs: total_occupied_nights (from SQL), total_available_rooms (from Capacity Map), days_in_period.
 4. RevPAR (Revenue Per Available Room):
     - Logic: Retrieve 'SUM(total_price)' via SQL.
-    - Calculation: Use the tool `calculate_revpar`. DO NOT calculate internally.
+    - Calculation: Use the tool `tool_calculate_revpar`. DO NOT calculate internally.
     - Inputs: total_revenue (from SQL), total_available_rooms (from Capacity Map), days_in_period.
 
 Hotel Capacity Map (Number of Rooms per Hotel):
@@ -68,11 +70,11 @@ Hotel Capacity Map (Number of Rooms per Hotel):
 
 Process:
 Step 1: Generate the SQL query based on natural language to extract the necessary aggregations (SUM(total_nights), SUM(total_price), etc.).
-Step 2: Validate the generated SQL query using the `validate_sql_query` tool.
+Step 2: Validate the generated SQL query using the `tool_validate_sql_query` tool.
     - If valid: Proceed to Step 3.
     - If invalid or a syntax error occurs: Analyze the error message, CORRECT the SQL query, and RE-VALIDATE.
-Step 3: Execute the validated query using `execute_sql_with_cache` tool (DO NOT use `sql_db_query`).
-Step 4: Call the appropriate tool (`calculate_occupancy_rate` or `calculate_revpar`) with the SQL result, room count (from the map below), and number of days.
+Step 3: Execute the validated query using `tool_execute_sql_with_cache` tool (DO NOT use `sql_db_query`).
+Step 4: Call the appropriate tool (`tool_calculate_occupancy_rate` or `tool_calculate_revpar`) with the SQL result, room count (from the map below), and number of days.
 Step 5: Format the final answer using the tool's output.
 
 Guidelines:
@@ -82,7 +84,7 @@ Guidelines:
 - Always refer to the Hotel Capacity Map for room counts; do not infer from data.
 - NEVER perform complex division or multiplication for Occupancy/RevPAR in your head. USE THE TOOLS.
 - ALWAYS validate your SQL (Step 2) before executing it (Step 3).
-- ALWAYS use `execute_sql_with_cache` for query execution to enable caching and logging.
+- ALWAYS use `tool_execute_sql_with_cache` for query execution to enable caching and logging.
 
 Example of expected Queries to Handle, including but not limited to:
 - "Tell me the amount of bookings for Obsidian Tower in 2025"
@@ -100,8 +102,16 @@ Return the final answer in a clear, professional text format, using markdown tab
 """.format(hotel_capacity=hotel_capacity_formatted)
 
 
+tools = [
+        tool_calculate_occupancy_rate, 
+        tool_calculate_revpar,
+        tool_validate_sql_query,
+        tool_execute_sql_with_cache
+    ]
 
 try:
+
+    
     booking_sql_agent = create_sql_agent(
             llm=llm,
             toolkit=toolkit,
@@ -110,12 +120,7 @@ try:
             prefix=SYSTEM_PREFIX,
             handle_parsing_errors=True,
             max_execution_time=30,
-            extra_tools=[
-                HotelFinancialCalculator.calculate_occupancy_rate, 
-                HotelFinancialCalculator.calculate_revpar,
-                SQLQueryManager.validate_sql_query,
-                SQLQueryManager.execute_sql_with_cache
-            ]
+            extra_tools=tools
         )
     # Explicitly force handle_parsing_errors in case the wrapper ignored it
     if booking_sql_agent:
