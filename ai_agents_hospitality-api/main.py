@@ -32,30 +32,24 @@ from fastapi.templating import Jinja2Templates
 from util.logger_config import logger
 from util.configuration import settings, PROJECT_ROOT
 
-# Import Exercise 2 agent
-EXERCISE_2_AVAILABLE = False
+# Import AI Agents (Orchestrator)
+BOTH_AGENTS_AVAILABLE = False
 try:
-    # from agents.hotel_simple_agent import handle_hotel_query_simple, load_hotel_data
-    # from agents.hotel_rag_agent import handle_hotel_query_rag
-    print("Importing Exercise 2 agent...")
-    from agents.booking_sql_agent import handle_hotel_query_sql
-    print("Exercise 2 agent imported successfully.")
-    # Try to load hotel data to verify everything is set up correctly
-    try:
-        # load_hotel_data()
-        EXERCISE_2_AVAILABLE = True
-        logger.info("✅ Exercise 2 agent loaded successfully and hotel data verified")
-    except Exception as e:
-        logger.warning(f"Exercise 2 agent code loaded but data/files not ready: {e}")
-        logger.warning("Will use hardcoded responses until hotel data is available")
-        EXERCISE_2_AVAILABLE = False
+    print("Importing AI Agents...")
+    # Import Orchestrator
+    from agents.orchestrator import handle_orchestrated_query
+    
+    print("AI Agents imported successfully.")
+    BOTH_AGENTS_AVAILABLE = True
+    logger.info("✅ All AI Agents (Orchestrator, RAG, SQL) loaded successfully")
+
 except ImportError as e:
-    logger.warning(f"Exercise 2 agent not available (ImportError): {e}")
+    logger.warning(f"AI Agents not available (ImportError): {e}")
     logger.warning("Using hardcoded responses. Install LangChain dependencies if needed.")
-    EXERCISE_2_AVAILABLE = False
+    BOTH_AGENTS_AVAILABLE = False
 except Exception as e:
-    logger.warning(f"Error loading Exercise 2 agent: {e}. Using hardcoded responses.")
-    EXERCISE_2_AVAILABLE = False
+    logger.warning(f"Error loading AI Agents: {e}. Using hardcoded responses.")
+    BOTH_AGENTS_AVAILABLE = False
 
 
 # Hardcoded responses for demo queries
@@ -246,21 +240,19 @@ async def websocket_endpoint(websocket: WebSocket, uuid: str):
                 except json.JSONDecodeError:
                     user_query = data
                 
-                # Get response from Exercise 2 agent or fallback to hardcoded
-                if EXERCISE_2_AVAILABLE:
+                # Get response from AI Agents or fallback to hardcoded
+                if BOTH_AGENTS_AVAILABLE:
                     try:
-                        logger.info(f"Using Exercise 2 agent for query: {user_query[:100]}...")
-                        # response_content = await handle_hotel_query_simple(user_query)
-                        response_content = await handle_hotel_query_sql(user_query)
-                        # logger.info(f"✅ Exercise 2 agent response generated successfully for {uuid}")
-                        logger.info(f"✅ Exercise 2 agent response generated successfully for {uuid}")
+                        logger.info(f"Processing query via Orchestrator: {user_query[:100]}...")
+                        response_content = await handle_orchestrated_query(user_query)
+                        logger.info(f"✅ AI Agent response generated successfully for {uuid}")
                     except Exception as e:
-                        logger.error(f"❌ Error in Exercise 2 agent: {e}", exc_info=True)
+                        logger.error(f"❌ Error in AI Agent processing: {e}", exc_info=True)
                         logger.warning(f"Falling back to hardcoded response for {uuid}")
                         response_content = find_matching_response(user_query)
                 else:
                     # Fallback to hardcoded responses
-                    logger.debug(f"Using hardcoded responses (Exercise 2 not available) for {uuid}")
+                    logger.debug(f"Using hardcoded responses (AI Agents not available) for {uuid}")
                     response_content = find_matching_response(user_query)
                 
                 # Send response back to client

@@ -38,9 +38,9 @@ check_service_health() {
   echo ""
   echo "🔍 Checking service health..."
   local all_healthy=true
-  local wait_time=3  # Time to wait before initial checks in seconds
-  local max_retries=3  # Number of retries for each service
-  local retry_delay=2  # Time to wait between retries in seconds
+  local wait_time=15  # Increased wait time for heavier stack
+  local max_retries=10  # Increased retries
+  local retry_delay=5  # Increased delay between retries
 
   # Wait a bit before checking API services
   echo "  Waiting ${wait_time} seconds for services to initialize..."
