@@ -77,4 +77,15 @@ While functional, the current implementation has known limitations:
 
 ## Tests
 
-<!-- Add screenshots of the tests performing here -->
+The following test demonstrates the agent's behavior under load limits and timeout constraints.
+
+<img src="doc/ex2-test-timeout.png" width="600" alt="Timeout Test Screenshot">
+
+**Test Description:**
+
+1.  **Successful Query**: The first query ("Tell me the amount of bookings for Obsidian Tower in 2025") was processed successfully, returning a precise booking count.
+2.  **Timeout Test**: The second query ("What is the occupancy rate for Imperial Crown in January 2025?") was deliberately run during a period of API latency to trigger the timeout mechanism.
+3.  **Result**: The agent returned "Agent stopped due to iteration limit or time limit," verifying that the `max_execution_time` configuration is functioning correctly. 
+
+This test also highlights the practical limitations of the **Free Tier Gemini API**, where rate limits or increased latency can occasionally prevent complex multi-step calculations from completing within the strict timeout window.
+
