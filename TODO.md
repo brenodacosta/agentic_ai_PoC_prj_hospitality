@@ -8,10 +8,7 @@
 
 | Task | Priority | Started | Notes |
 |------|----------|---------|-------|
-| **ex_2_phase_7**: Implement query timeout protection | Medium | 2026-01-14 | - |
-| **ex_2_phase_7**: Add logging for debugging SQL generation | Medium | 2026-01-14 | - |
-| **ex_2_phase_8**: Optimize system prompt for better SQL generation | Medium | 2026-01-14 | - |
-| **ex_2_phase_8**: Add query result caching for common queries (optional) | Low | 2026-01-14 | - |
+| _No tasks in progress_ | - | - | - |
 
 ---
 
@@ -115,6 +112,11 @@
 | **ex_2_phase_6**: Verify occupancy and RevPAR calculations are accurate | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
 | **ex_2_phase_6**: Test with edge cases (empty results, invalid dates) | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
 | **ex_2_phase_7**: Test end-to-end with WebSocket interface | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
+| **ex_2_phase_7**: Add comprehensive error handling (connection errors, query errors) | 2026-01-13 | [2abf679](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2abf679fac3cd65ad52fa310f91d2443c001eed3) | Errors are handled gracefully |
+| **ex_2_phase_7**: Implement query timeout protection | 2026-01-15 | [9facc48](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/9facc480a10bb3abf3481928f24689d92656d666) | Added `max_execution_time=30` to agent creation |
+| **ex_2_phase_7**: Add logging for debugging SQL generation | 2026-01-15 | [9facc48](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/9facc480a10bb3abf3481928f24689d92656d666) | Implemented `_log_query` in `SQLQueryManager` |
+| **ex_2_phase_8**: Optimize system prompt for better SQL generation | 2026-01-15 | [9facc48](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/9facc480a10bb3abf3481928f24689d92656d666) | Enhanced `SYSTEM_PREFIX` with clearer steps and `execute_sql_with_cache` instruction |
+| **ex_2_phase_8**: Add query result caching for common queries (optional) | 2026-01-15 | [9facc48](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/9facc480a10bb3abf3481928f24689d92656d666) | Implemented `SQLQueryManager` with LRU cache and `execute_sql_with_cache` tool |
 
 ---
 
@@ -272,14 +274,14 @@ When you complete a task, reference the commit like this:
 
 #### Phase 7: Integration & Error Handling
 - [✅] Integrate SQL agent with WebSocket API
-- [ ] Add comprehensive error handling (connection errors, query errors)
-- [ ] Implement query timeout protection
-- [ ] Add logging for debugging SQL generation
+- [✅] Add comprehensive error handling (connection errors, query errors)
+- [✅] Implement query timeout protection
+- [✅] Add logging for debugging SQL generation
 - [✅] Test end-to-end with WebSocket interface
 
 #### Phase 8: Optimization & Documentation
-- [ ] Optimize system prompt for better SQL generation
-- [ ] Add query result caching for common queries (optional)
+- [✅] Optimize system prompt for better SQL generation
+- [✅] Add query result caching for common queries (optional)
 - [ ] Document SQL agent limitations and best practices
 - [ ] Add code comments and docstrings
 
@@ -289,8 +291,8 @@ When you complete a task, reference the commit like this:
 
 ```
 📌 Pending:  9
-🔥 In progress: 4
-✅ Completed: 71
+🔥 In progress: 0
+✅ Completed: 76
 🐛 Technical debt: 4
 🎓 Workshop Exercises: 3 (Exercise 0, 1, 2)
 ```
