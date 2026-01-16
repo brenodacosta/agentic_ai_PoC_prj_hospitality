@@ -28,7 +28,6 @@
 ### Low Priority
 | # | Task | Created | Context |
 |---|------|--------|---------|
-| 1 | **ex_1_phase_4**: Add response formatting (markdown structure) | 2026-01-08 | agents/hotel_rag_agent.py |
 | 2 | **ex_1_phase_5**: Compare results with Exercise 0 (should be more accurate) | 2026-01-08 | - |
 | 3 | **ex_1_phase_6**: Tune chunk size and overlap if needed | 2026-01-08 | agents/hotel_rag_agent.py |
 | 4 | **ex_1_phase_6**: Optimize retrieval k parameter | 2026-01-08 | agents/hotel_rag_agent.py |
@@ -102,6 +101,7 @@
 | **ex_2_phase_5**: Implement Step 1: Generate SQL from natural language | 2026-01-12 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | First agent handling simple queries |
 | **ex_2_phase_5**: Implement Step 2: Execute query and format results | 2026-01-12 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | first agent handling simple queries |
 | **ex_2_phase_5**: Implement result formatting (tables, markdown) | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151c) | Results are formatted by default by the agent |
+| **ex_1_phase_4**: Add response formatting (markdown structure) | 2026-01-07 | [d2cb36f](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d2cb36f8def899fcbd614b86984af5e84595c5cc) | The system_prefix specifies that the result should be formatted in MD structure | 
 | **ex_2_phase_7**: Integrate SQL agent with WebSocket API | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151) | Booking SQL Agent integrated with WebSocket, pending orchestrator |
 | **ex_2_phase_5**: Add query validation before execution | 2026-01-13 | [2abf679](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2abf679fac3cd65ad52fa310f91d2443c001eed3) | New function created as a tool to validate the SQL query before it is executed |
 | **ex_2_phase_5**: Add error handling for SQL syntax errors | 2026-01-13 | [2abf679](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2abf679fac3cd65ad52fa310f91d2443c001eed3) | SQL errors are handled Interally via the model before the final answer |
@@ -127,8 +127,8 @@
 |-------------|--------|----------|--------|
 | Agent relies on free tier Gemini API which limits full architecture testing | High | 2026-01-08 | Open |
 | Agent does not fallback to other tools (DB, reports) if RAG fails | High | 2026-01-08 | Open |
-| RAG agent tools (HotelDatabaseHelper) are coupled in same file, violating separation of concerns | Low | 2026-01-09 | Open |
-| Unused/Commented-out tools in RAG agent (tool_list_hotels, tool_get_prices...) adding clutter | Low | 2026-01-09 | Open |
+| RAG agent tools (HotelDatabaseHelper) are coupled in same file, violating separation of concerns | Low | 2026-01-09 | Closed |
+| Unused/Commented-out tools in RAG agent (tool_list_hotels, tool_get_prices...) adding clutter | Low | 2026-01-09 | Closed |
 
 ---
 
@@ -210,7 +210,7 @@ When you complete a task, reference the commit like this:
 #### Phase 4: Agent Implementation
 - [✅] Create hotel details agent function
 - [ ] Implement query preprocessing (normalization, validation)
-- [ ] Add response formatting (markdown structure)
+- [✅] Add response formatting (markdown structure)
 - [ ] Handle edge cases (no results, ambiguous queries)
 
 #### Phase 5: Integration & Testing
@@ -291,9 +291,9 @@ When you complete a task, reference the commit like this:
 ## 📊 Quick Summary
 
 ```
-📌 Pending:  8
+📌 Pending:  7
 🔥 In progress: 0
-✅ Completed: 79
+✅ Completed: 80
 🐛 Technical debt: 4
 🎓 Workshop Exercises: 3 (Exercise 0, 1, 2)
 ```
