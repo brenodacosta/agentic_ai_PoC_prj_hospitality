@@ -33,7 +33,6 @@
 | 3 | **ex_1_phase_6**: Tune chunk size and overlap if needed | 2026-01-08 | agents/hotel_rag_agent.py |
 | 4 | **ex_1_phase_6**: Optimize retrieval k parameter | 2026-01-08 | agents/hotel_rag_agent.py |
 | 5 | **ex_1_phase_6**: Add caching for frequent queries (optional) | 2026-01-08 | - |
-| 6 | **ex_1_phase_6**: Document vector store persistence strategy | 2026-01-08 | - |
 
 ---
 
@@ -81,6 +80,7 @@
 | **ex_1_phase_5**: Test with meal plan and pricing queries | 2026-01-07 | N/A | Tests passed 🎉 |
 | **ex_1_phase_5**: Test with room comparison queries | 2026-01-07 | N/A | Tests passed 🎉 |
 | **ex_1_phase_5**: Integrate RAG agent with WebSocket API | 2026-01-08 | [41acfff](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/41acffffa02424d534bd1ebc8142a295aabe650a) | Integration validated with `test_websocket_integration.py` |
+| **ex_1_phase_6**: Document vector store persistence strategy | 2026-01-16 | [5c44c68](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/5c44c688c4f04897cbf76f985ee9d50f1dd469f9) | Documented in README_EXERCISE_1.md |
 | **ex_2_phase_1**: Start PostgreSQL database using `./start-app.sh --no_ai_agent` | 2026-01-08 | N/A | - |
 | **ex_2_phase_1**: Install SQL dependencies (`langchain-community`, `psycopg2-binary`) | 2026-01-08 | N/A | - |
 | **ex_2_phase_1**: Verify database connection (test connection string) | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
@@ -117,7 +117,8 @@
 | **ex_2_phase_7**: Add logging for debugging SQL generation | 2026-01-15 | [9facc48](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/9facc480a10bb3abf3481928f24689d92656d666) | Implemented `_log_query` in `SQLQueryManager` |
 | **ex_2_phase_8**: Optimize system prompt for better SQL generation | 2026-01-15 | [9facc48](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/9facc480a10bb3abf3481928f24689d92656d666) | Enhanced `SYSTEM_PREFIX` with clearer steps and `execute_sql_with_cache` instruction |
 | **ex_2_phase_8**: Add query result caching for common queries (optional) | 2026-01-15 | [9facc48](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/9facc480a10bb3abf3481928f24689d92656d666) | Implemented `SQLQueryManager` with LRU cache and `execute_sql_with_cache` tool |
-
+| **ex_2_phase_8**: Document SQL agent limitations and best practices | 2026-01-16 | [9716970](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/97169708584c336bd53ab24c0c3afcdbbc2ec090) | Documented in README_EXERCISE_2.md |
+| **ex_2_phase_8**: Add code comments and docstrings | 2026-01-16 | [9716970](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/97169708584c336bd53ab24c0c3afcdbbc2ec090) | Added verification logic comments |
 ---
 
 ## 🐛 Technical Debt
@@ -224,7 +225,7 @@ When you complete a task, reference the commit like this:
 - [ ] Tune chunk size and overlap if needed
 - [ ] Optimize retrieval k parameter
 - [ ] Add caching for frequent queries (optional)
-- [ ] Document vector store persistence strategy
+- [✅] Document vector store persistence strategy
 
 ---
 
@@ -282,17 +283,17 @@ When you complete a task, reference the commit like this:
 #### Phase 8: Optimization & Documentation
 - [✅] Optimize system prompt for better SQL generation
 - [✅] Add query result caching for common queries (optional)
-- [ ] Document SQL agent limitations and best practices
-- [ ] Add code comments and docstrings
+- [✅] Document SQL agent limitations and best practices
+- [✅] Add code comments and docstrings
 
 ---
 
 ## 📊 Quick Summary
 
 ```
-📌 Pending:  9
+📌 Pending:  8
 🔥 In progress: 0
-✅ Completed: 76
+✅ Completed: 79
 🐛 Technical debt: 4
 🎓 Workshop Exercises: 3 (Exercise 0, 1, 2)
 ```
