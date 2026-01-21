@@ -115,3 +115,9 @@ doctrees/
 
 # Project specific
 logs/
+
+# Cache directories
+cache/
+
+# chroma vector store
+chroma_db_data
