@@ -255,6 +255,9 @@ agent_prompt = ChatPromptTemplate.from_messages([
     - Format responses in a clear, readable way using markdown
     - Use bullet points and tables when appropriate
     - Include specific prices, addresses, and details when available
+     
+     Return the final answer in a clear, professional text format, using markdown tables and bullet points to enhance readability.
+
     """),
     ("human", "{input}"),
     ("placeholder", "{agent_scratchpad}"),
