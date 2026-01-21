@@ -2,7 +2,7 @@ import json
 import hashlib
 from collections import OrderedDict
 from pathlib import Path
-from typing import Dict, Union
+from typing import Dict, Union, Any
 from langchain_community.utilities import SQLDatabase
 from langchain_core.tools import tool
 from util.logger_config import logger
@@ -88,13 +88,9 @@ class SQLQueryManager:
         logger.info(f"Generated SQL Query: {query}")
 
     @staticmethod
-    @tool
     def validate_sql_query(query: str) -> str:
         """
         Validates a SQL query by running EXPLAIN. 
-        Use this tool to check the syntax of your generated SQL before executing it.
-        Returns "Valid" if the query syntax is correct.
-        Returns the error message if the query contains syntax errors.
         """
         SQLQueryManager._log_query(query)
         try:
@@ -113,12 +109,9 @@ class SQLQueryManager:
             return f"Invalid SQL Syntax: {str(e)}"
 
     @staticmethod
-    @tool
     def execute_sql_with_cache(query: str) -> str:
         """
         Executes a SQL query with LRU caching.
-        Use this tool to execute the validated SQL query against the database.
-        Returns the query result.
         """
         query_hash = SQLQueryManager._get_query_hash(query)
         
@@ -147,11 +140,14 @@ class SQLQueryManager:
 class HotelFinancialCalculator:
     
     @staticmethod
-    def _parse_params(input_str: str) -> dict:
+    def _parse_params(input_val: Union[str, int, float]) -> dict:
         """Parses a string of kwargs like 'key=value, key2=value2'."""
         params = {}
+        if not isinstance(input_val, str):
+            return params
+            
         try:
-            parts = input_str.split(',')
+            parts = input_val.split(',')
             for part in parts:
                 if '=' in part:
                     k, v = part.split('=', 1)
@@ -171,11 +167,9 @@ class HotelFinancialCalculator:
         return params
 
     @staticmethod
-    @tool
     def calculate_occupancy_rate(total_occupied_nights: Union[int, str], total_available_rooms: Union[int, str] = 0, days_in_period: Union[int, str] = 0) -> str:
         """
         Calculate the Occupancy Rate percentage.
-        Formula: (total_occupied_nights / (total_available_rooms * days_in_period)) * 100
         """
         # Handle case where agent passes all args as a single string
         if isinstance(total_occupied_nights, str) and '=' in total_occupied_nights:
@@ -205,11 +199,9 @@ class HotelFinancialCalculator:
             return f"Error calculating occupancy: {e}"
 
     @staticmethod
-    @tool
     def calculate_revpar(total_revenue: Union[float, str], total_available_rooms: Union[int, str] = 0, days_in_period: Union[int, str] = 0) -> str:
         """
         Calculate Revenue Per Available Room (RevPAR).
-        Formula: total_revenue / (total_available_rooms * days_in_period)
         """
          # Handle case where agent passes all args as a single string
         if isinstance(total_revenue, str) and '=' in total_revenue:
@@ -236,3 +228,40 @@ class HotelFinancialCalculator:
             return f"${revpar:.2f}"
         except Exception as e:
             return f"Error calculating RevPAR: {e}"
+
+# --- Tool Wrappers ---
+
+@tool
+def tool_validate_sql_query(query: str) -> str:
+    """
+    Validates a SQL query by running EXPLAIN. 
+    Use this tool to check the syntax of your generated SQL before executing it.
+    Returns "Valid" if the query syntax is correct.
+    Returns the error message if the query contains syntax errors.
+    """
+    return SQLQueryManager.validate_sql_query(query)
+
+@tool
+def tool_execute_sql_with_cache(query: str) -> str:
+    """
+    Executes a SQL query with LRU caching.
+    Use this tool to execute the validated SQL query against the database.
+    Returns the query result.
+    """
+    return SQLQueryManager.execute_sql_with_cache(query)
+
+@tool
+def tool_calculate_occupancy_rate(total_occupied_nights: Union[int, str], total_available_rooms: Union[int, str] = 0, days_in_period: Union[int, str] = 0) -> str:
+    """
+    Calculate the Occupancy Rate percentage.
+    Formula: (total_occupied_nights / (total_available_rooms * days_in_period)) * 100
+    """
+    return HotelFinancialCalculator.calculate_occupancy_rate(total_occupied_nights, total_available_rooms, days_in_period)
+
+@tool
+def tool_calculate_revpar(total_revenue: Union[float, str], total_available_rooms: Union[int, str] = 0, days_in_period: Union[int, str] = 0) -> str:
+    """
+    Calculate Revenue Per Available Room (RevPAR).
+    Formula: total_revenue / (total_available_rooms * days_in_period)
+    """
+    return HotelFinancialCalculator.calculate_revpar(total_revenue, total_available_rooms, days_in_period)

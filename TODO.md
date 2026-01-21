@@ -1,6 +1,6 @@
 # 📋 TODO - Agentic AI Hospitality PoC
 
-> Last updated: 2025-12-16
+> Last updated: 2026-01-21
 
 ---
 
@@ -17,23 +17,17 @@
 ### High Priority
 | # | Task | Created | Context |
 |---|------|--------|---------|
-| 1 | **ex_1_phase_4**: Handle edge cases (no results, ambiguous queries) | 2026-01-08 | agents/hotel_rag_agent.py |
+| _No high priority tasks_ | - | - | - |
 
 ### Medium Priority
 | # | Task | Created | Context |
 |---|------|--------|---------|
-| 1 | **ex_1_phase_4**: Implement query preprocessing (normalization, validation) | 2026-01-08 | agents/hotel_rag_agent.py |
-| 2 | **ex_1_phase_5**: Verify performance (response time < 10s) | 2026-01-08 | - |
+| _No medium priority tasks_ | - | - | - |
 
 ### Low Priority
 | # | Task | Created | Context |
 |---|------|--------|---------|
-| 1 | **ex_1_phase_4**: Add response formatting (markdown structure) | 2026-01-08 | agents/hotel_rag_agent.py |
-| 2 | **ex_1_phase_5**: Compare results with Exercise 0 (should be more accurate) | 2026-01-08 | - |
-| 3 | **ex_1_phase_6**: Tune chunk size and overlap if needed | 2026-01-08 | agents/hotel_rag_agent.py |
-| 4 | **ex_1_phase_6**: Optimize retrieval k parameter | 2026-01-08 | agents/hotel_rag_agent.py |
-| 5 | **ex_1_phase_6**: Add caching for frequent queries (optional) | 2026-01-08 | - |
-| 6 | **ex_1_phase_6**: Document vector store persistence strategy | 2026-01-08 | - |
+| _No low priority tasks_ | - | - | - |
 
 ---
 
@@ -81,6 +75,7 @@
 | **ex_1_phase_5**: Test with meal plan and pricing queries | 2026-01-07 | N/A | Tests passed 🎉 |
 | **ex_1_phase_5**: Test with room comparison queries | 2026-01-07 | N/A | Tests passed 🎉 |
 | **ex_1_phase_5**: Integrate RAG agent with WebSocket API | 2026-01-08 | [41acfff](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/41acffffa02424d534bd1ebc8142a295aabe650a) | Integration validated with `test_websocket_integration.py` |
+| **ex_1_phase_6**: Document vector store persistence strategy | 2026-01-16 | [5c44c68](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/5c44c688c4f04897cbf76f985ee9d50f1dd469f9) | Documented in README_EXERCISE_1.md |
 | **ex_2_phase_1**: Start PostgreSQL database using `./start-app.sh --no_ai_agent` | 2026-01-08 | N/A | - |
 | **ex_2_phase_1**: Install SQL dependencies (`langchain-community`, `psycopg2-binary`) | 2026-01-08 | N/A | - |
 | **ex_2_phase_1**: Verify database connection (test connection string) | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
@@ -102,6 +97,10 @@
 | **ex_2_phase_5**: Implement Step 1: Generate SQL from natural language | 2026-01-12 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | First agent handling simple queries |
 | **ex_2_phase_5**: Implement Step 2: Execute query and format results | 2026-01-12 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | first agent handling simple queries |
 | **ex_2_phase_5**: Implement result formatting (tables, markdown) | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151c) | Results are formatted by default by the agent |
+| **ex_1_phase_4**: Add response formatting (markdown structure) | 2026-01-07 | [d2cb36f](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d2cb36f8def899fcbd614b86984af5e84595c5cc) | The system_prefix specifies that the result should be formatted in MD structure | 
+| **ex_1_phase_6**: Optimize retrieval k parameter | 2026-01-21 | [dd79cca](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/dd79cca) | k was changed to 10 and for queries that require deeper analisis a function is implemented to be an "analyst" |
+| **ex_1_phase_6**: Tune chunk size and overlap if needed | 2026-01-21 | [d2cb36f](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d2cb36f) | with this cunk overlap reduced is valid because every chunk has "Hotel: Name" written in it |
+| **ex_1_phase_5**: Compare results with Exercise 0 (should be more accurate) | 2026-01-21 | [d25ede0](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d25ede0) | Test script implemented handling both specific RAG queries and "list all" analysis |
 | **ex_2_phase_7**: Integrate SQL agent with WebSocket API | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151) | Booking SQL Agent integrated with WebSocket, pending orchestrator |
 | **ex_2_phase_5**: Add query validation before execution | 2026-01-13 | [2abf679](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2abf679fac3cd65ad52fa310f91d2443c001eed3) | New function created as a tool to validate the SQL query before it is executed |
 | **ex_2_phase_5**: Add error handling for SQL syntax errors | 2026-01-13 | [2abf679](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2abf679fac3cd65ad52fa310f91d2443c001eed3) | SQL errors are handled Interally via the model before the final answer |
@@ -117,7 +116,12 @@
 | **ex_2_phase_7**: Add logging for debugging SQL generation | 2026-01-15 | [9facc48](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/9facc480a10bb3abf3481928f24689d92656d666) | Implemented `_log_query` in `SQLQueryManager` |
 | **ex_2_phase_8**: Optimize system prompt for better SQL generation | 2026-01-15 | [9facc48](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/9facc480a10bb3abf3481928f24689d92656d666) | Enhanced `SYSTEM_PREFIX` with clearer steps and `execute_sql_with_cache` instruction |
 | **ex_2_phase_8**: Add query result caching for common queries (optional) | 2026-01-15 | [9facc48](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/9facc480a10bb3abf3481928f24689d92656d666) | Implemented `SQLQueryManager` with LRU cache and `execute_sql_with_cache` tool |
-
+| **ex_2_phase_8**: Document SQL agent limitations and best practices | 2026-01-16 | [9716970](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/97169708584c336bd53ab24c0c3afcdbbc2ec090) | Documented in README_EXERCISE_2.md |
+| **ex_2_phase_8**: Add code comments and docstrings | 2026-01-16 | [9716970](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/97169708584c336bd53ab24c0c3afcdbbc2ec090) | Added verification logic comments |
+| **ex_1_phase_5**: Verify performance (response time < 10s) | 2026-01-21 | [d25ede0](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d25ede0291982f3bb0fde3330a6b8bb7ea739d9b) | All tests passed in the test script (limited to Gemini Key free tier) |
+| **ex_1_phase_4**: Handle edge cases (no results, ambiguous queries) | 2026-01-21 | [d25ede0](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d25ede0291982f3bb0fde3330a6b8bb7ea739d9b) | Agent says when it doesn't have a clear answer for both ambiguous and no results |
+| **ex_1_phase_4**: Implement query preprocessing (normalization, validation) | 2026-01-21 | [ebbe3bd](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/ebbe3bd4597a0c815ea664c101107d78711d0517) | Query is cleaned and validated before agent is invoked |
+| **ex_1_phase_6**: Add caching for frequent queries (optional) | 2026-01-21 | [84be3a3](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/84be3a3c7602d4456f3b11b92408e816e53e7aec) | LRU cache for the last 5 queries |
 ---
 
 ## 🐛 Technical Debt
@@ -126,8 +130,8 @@
 |-------------|--------|----------|--------|
 | Agent relies on free tier Gemini API which limits full architecture testing | High | 2026-01-08 | Open |
 | Agent does not fallback to other tools (DB, reports) if RAG fails | High | 2026-01-08 | Open |
-| RAG agent tools (HotelDatabaseHelper) are coupled in same file, violating separation of concerns | Low | 2026-01-09 | Open |
-| Unused/Commented-out tools in RAG agent (tool_list_hotels, tool_get_prices...) adding clutter | Low | 2026-01-09 | Open |
+| RAG agent tools (HotelDatabaseHelper) are coupled in same file, violating separation of concerns | Low | 2026-01-09 | Closed |
+| Unused/Commented-out tools in RAG agent (tool_list_hotels, tool_get_prices...) adding clutter | Low | 2026-01-09 | Closed |
 
 ---
 
@@ -208,23 +212,23 @@ When you complete a task, reference the commit like this:
 
 #### Phase 4: Agent Implementation
 - [✅] Create hotel details agent function
-- [ ] Implement query preprocessing (normalization, validation)
-- [ ] Add response formatting (markdown structure)
-- [ ] Handle edge cases (no results, ambiguous queries)
+- [✅] Implement query preprocessing (normalization, validation)
+- [✅] Add response formatting (markdown structure)
+- [✅] Handle edge cases (no results, ambiguous queries)
 
 #### Phase 5: Integration & Testing
 - [✅] Integrate RAG agent with WebSocket API
 - [✅] Test with hotel location queries
 - [✅] Test with meal plan and pricing queries
 - [✅] Test with room comparison queries
-- [ ] Verify performance (response time < 10s)
-- [ ] Compare results with Exercise 0 (should be more accurate)
+- [✅] Verify performance (response time < 10s)
+- [✅] Compare results with Exercise 0 (should be more accurate)
 
 #### Phase 6: Optimization
-- [ ] Tune chunk size and overlap if needed
-- [ ] Optimize retrieval k parameter
-- [ ] Add caching for frequent queries (optional)
-- [ ] Document vector store persistence strategy
+- [✅] Tune chunk size and overlap if needed
+- [✅] Optimize retrieval k parameter
+- [✅] Add caching for frequent queries (optional)
+- [✅] Document vector store persistence strategy
 
 ---
 
@@ -282,18 +286,18 @@ When you complete a task, reference the commit like this:
 #### Phase 8: Optimization & Documentation
 - [✅] Optimize system prompt for better SQL generation
 - [✅] Add query result caching for common queries (optional)
-- [ ] Document SQL agent limitations and best practices
-- [ ] Add code comments and docstrings
+- [✅] Document SQL agent limitations and best practices
+- [✅] Add code comments and docstrings
 
 ---
 
 ## 📊 Quick Summary
 
 ```
-📌 Pending:  9
+📌 Pending:  0
 🔥 In progress: 0
-✅ Completed: 76
-🐛 Technical debt: 4
+✅ Completed: 87
+🐛 Technical debt open: 2
 🎓 Workshop Exercises: 3 (Exercise 0, 1, 2)
 ```
 

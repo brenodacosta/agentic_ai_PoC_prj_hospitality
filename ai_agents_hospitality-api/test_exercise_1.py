@@ -11,6 +11,7 @@ Usage:
 import asyncio
 import os
 import sys
+import time
 from pathlib import Path
 
 # Add the current directory to the path
@@ -48,24 +49,42 @@ async def test_exercise_1():
         "Which hotels in Paris have a Single room?",
         "What is the cost of a 'Double' room in Majestic Plaza during peak season including Full Board?",
         "Compare the 'OccupancyPeakSeasonWeight' between Grand Victoria and Obsidian Tower.",
-        "List all distinct room types available across all hotels in Nice."
+        "List all distinct room types available across all hotels in Nice.",
+        "List all hotels in Bordeaux",  # Edge case: No results (City not in dataset)
+        "What is the price of a room?"  # Edge case: Ambiguous query
     ]
     
     success_count = 0
+    performance_warnings = 0
+
     for i, query in enumerate(test_queries, 1):
         print(f"\n📝 Test {i}/{len(test_queries)}: {query}")
         print("-" * 60)
         
+        start_time = time.time()
         try:
             response = await handle_hotel_query_rag(query)
-            print(f"✅ Response received ({len(response)} characters)")
-            print(f"\n{response}")
-            success_count += 1
+            duration = time.time() - start_time
+            
+            print(f"Response received ({len(response)} characters)")
+            print(f"\n{response}\n")
+            
+            if duration > 10.0:
+                print(f"⚠️  Partially Valid: Response time {duration:.2f}s > 10s")
+                performance_warnings += 1
+                success_count += 1
+            else:
+                print(f"✅ Passed in {duration:.2f}s")
+                success_count += 1
+                
         except Exception as e:
-            print(f"❌ Error: {e}")
+            duration = time.time() - start_time
+            print(f"❌ Error after {duration:.2f}s: {e}")
     
     print("\n" + "=" * 60)
-    print(f"\n📊 Results: {success_count}/{len(test_queries)} tests passed")
+    print(f"\n📊 Results: {success_count}/{len(test_queries)} tests passed functionality")
+    if performance_warnings > 0:
+        print(f"⚠️  Performance: {performance_warnings} queries took longer than 10s")
     
     if success_count == len(test_queries):
         print("✅ All tests passed!")
