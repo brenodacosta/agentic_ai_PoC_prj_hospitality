@@ -83,7 +83,7 @@ check_service_health() {
  
   # Check PostgreSQL (bookings-db)
   echo -n "  Checking PostgreSQL connection (bookings-db)... "
-  if docker exec bookings-db pg_isready -U "${POSTGRES_USER:-postgres}" -d "${POSTGRES_DB:-hospitality_db}" >/dev/null 2>&1; then
+  if docker exec bookings-db pg_isready -U "${POSTGRES_USER:-postgres}" -d "${POSTGRES_DB:-bookings_db}" >/dev/null 2>&1; then
     echo "✅ OK"
   else
     echo "❌ Failed to connect to PostgreSQL"
@@ -316,7 +316,7 @@ echo ""
 echo "🗄️  PostgreSQL Database:"
 echo "   Host: localhost"
 echo "   Port: ${POSTGRES_PORT:-5432}"
-echo "   Database: ${POSTGRES_DB:-hospitality_db}"
+echo "   Database: ${POSTGRES_DB:-bookings_db}"
 echo "   User: ${POSTGRES_USER:-postgres}"
 
 echo ""

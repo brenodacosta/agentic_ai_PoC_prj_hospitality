@@ -8,15 +8,7 @@
 
 | Task | Priority | Started | Notes |
 |------|----------|---------|-------|
-| Implement query preprocessing (normalization, validation) | 🟡 Medium | 2026-01-08 | Ex 1 Phase 4 |
-| Add response formatting (markdown structure) | 🟢 Low | 2026-01-08 | Ex 1 Phase 4 |
-| Handle edge cases (no results, ambiguous queries) | 🔴 High | 2026-01-08 | Ex 1 Phase 4 |
-| Verify performance (response time < 10s) | 🟡 Medium | 2026-01-08 | Ex 1 Phase 5 |
-| Compare results with Exercise 0 (should be more accurate) | 🟢 Low | 2026-01-08 | Ex 1 Phase 5 |
-| Tune chunk size and overlap if needed | 🟢 Low | 2026-01-08 | Ex 1 Phase 6 |
-| Optimize retrieval k parameter | 🟢 Low | 2026-01-08 | Ex 1 Phase 6 |
-| Add caching for frequent queries (optional) | 🟢 Low | 2026-01-08 | Ex 1 Phase 6 |
-| Document vector store persistence strategy | 🟢 Low | 2026-01-08 | Ex 1 Phase 6 |
+| _No tasks in progress_ | - | - | - |
 
 ---
 
@@ -25,21 +17,23 @@
 ### High Priority
 | # | Task | Created | Context |
 |---|------|--------|---------|
-| 1 | **ex_2_phase_1**: Start PostgreSQL database using `./start-app.sh --no_ai_agent` | 2026-01-08 | bookings-db/ |
-| 2 | **ex_2_phase_1**: Install SQL dependencies (`langchain-community`, `psycopg2-binary`) | 2026-01-08 | ai_agents_hospitality-api/ |
-| 3 | **ex_2_phase_1**: Verify database connection (test connection string) | 2026-01-08 | ai_agents_hospitality-api/ |
-| 4 | **ex_2_phase_1**: Inspect database schema and understand table structure | 2026-01-08 | bookings-db/ |
-| 5 | **ex_2_phase_1**: Load sample booking data to test queries | 2026-01-08 | bookings-db/ |
+| 1 | **ex_1_phase_4**: Handle edge cases (no results, ambiguous queries) | 2026-01-08 | agents/hotel_rag_agent.py |
 
 ### Medium Priority
 | # | Task | Created | Context |
 |---|------|--------|---------|
-| - | _No tasks_ | - | - |
+| 1 | **ex_1_phase_4**: Implement query preprocessing (normalization, validation) | 2026-01-08 | agents/hotel_rag_agent.py |
+| 2 | **ex_1_phase_5**: Verify performance (response time < 10s) | 2026-01-08 | - |
 
 ### Low Priority
 | # | Task | Created | Context |
 |---|------|--------|---------|
-| - | _No tasks_ | - | - |
+| 1 | **ex_1_phase_4**: Add response formatting (markdown structure) | 2026-01-08 | agents/hotel_rag_agent.py |
+| 2 | **ex_1_phase_5**: Compare results with Exercise 0 (should be more accurate) | 2026-01-08 | - |
+| 3 | **ex_1_phase_6**: Tune chunk size and overlap if needed | 2026-01-08 | agents/hotel_rag_agent.py |
+| 4 | **ex_1_phase_6**: Optimize retrieval k parameter | 2026-01-08 | agents/hotel_rag_agent.py |
+| 5 | **ex_1_phase_6**: Add caching for frequent queries (optional) | 2026-01-08 | - |
+| 6 | **ex_1_phase_6**: Document vector store persistence strategy | 2026-01-08 | - |
 
 ---
 
@@ -87,6 +81,42 @@
 | **ex_1_phase_5**: Test with meal plan and pricing queries | 2026-01-07 | N/A | Tests passed 🎉 |
 | **ex_1_phase_5**: Test with room comparison queries | 2026-01-07 | N/A | Tests passed 🎉 |
 | **ex_1_phase_5**: Integrate RAG agent with WebSocket API | 2026-01-08 | [41acfff](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/41acffffa02424d534bd1ebc8142a295aabe650a) | Integration validated with `test_websocket_integration.py` |
+| **ex_2_phase_1**: Start PostgreSQL database using `./start-app.sh --no_ai_agent` | 2026-01-08 | N/A | - |
+| **ex_2_phase_1**: Install SQL dependencies (`langchain-community`, `psycopg2-binary`) | 2026-01-08 | N/A | - |
+| **ex_2_phase_1**: Verify database connection (test connection string) | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
+| **ex_2_phase_1**: Inspect database schema and understand table structure | 2026-01-08 | N/A | - |
+| **ex_2_phase_1**: Load sample booking data to test queries | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
+| **ex_2_phase_2**: Create SQLDatabase instance from connection URI | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
+| **ex_2_phase_2**: Test basic SQL queries manually (SELECT, COUNT, SUM) | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
+| **ex_2_phase_2**: Verify database schema introspection works | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
+| **ex_2_phase_2**: Test date filtering and aggregation queries | 2026-01-08 | [0607217](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/0607217bf11fc55223c9497aee907f23d01a2943) | Test script for SQL connectivity |
+| **ex_2_phase_3**: Create SQLDatabaseToolkit with database and LLM | 2026-01-09 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | First functional SQL Agent for simple queries |
+| **ex_2_phase_3**: Implement create_sql_agent with proper system prompt | 2026-01-09 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | First functional SQL Agent for simple queries |
+| **ex_2_phase_3**: Configure agent for hospitality context | 2026-01-09 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | First functional SQL Agent for simple queries |
+| **ex_2_phase_3**: Add custom system prompt explaining booking schema | 2026-01-09 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | First functional SQL Agent for simple queries |
+| **ex_2_phase_3**: Test agent with simple queries (booking counts) | 2026-01-09 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | Test passed returning booking counts for specific hotel |
+| **ex_2_phase_4**: Implement occupancy rate calculation (two-step: query + formula) | 2026-01-12 | [bb15c8b](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/bb15c8b3bcfde32e8f33f7063b5d2d4ea8c54c47) | Implemented with converting natural language to SQL query and returning formatted result |
+| **ex_2_phase_4**: Implement total revenue aggregation | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151c) | Tools created to help agent to perform calculations with retrieved data |
+| **ex_2_phase_4**: Implement RevPAR calculation (revenue / available room-nights) | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151c) | Tools created to help agent to perform calculations with retrieved data |
+| **ex_2_phase_4**: Handle edge cases (no bookings, division by zero) | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151c) | Functions prevent math edge cases and no data errors |
+| **ex_2_phase_5**: Implement Step 1: Generate SQL from natural language | 2026-01-12 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | First agent handling simple queries |
+| **ex_2_phase_5**: Implement Step 2: Execute query and format results | 2026-01-12 | [d157030](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d157030c91c982846b4e18c693bf1364cc0bc97f) | first agent handling simple queries |
+| **ex_2_phase_5**: Implement result formatting (tables, markdown) | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151c) | Results are formatted by default by the agent |
+| **ex_2_phase_7**: Integrate SQL agent with WebSocket API | 2026-01-12 | [2530dee](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2530dee4989314f93fdf7ed1f67ba113e23c151) | Booking SQL Agent integrated with WebSocket, pending orchestrator |
+| **ex_2_phase_5**: Add query validation before execution | 2026-01-13 | [2abf679](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2abf679fac3cd65ad52fa310f91d2443c001eed3) | New function created as a tool to validate the SQL query before it is executed |
+| **ex_2_phase_5**: Add error handling for SQL syntax errors | 2026-01-13 | [2abf679](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2abf679fac3cd65ad52fa310f91d2443c001eed3) | SQL errors are handled Interally via the model before the final answer |
+| **ex_2_phase_6**: Test with date range queries (months, quarters, years) | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
+| **ex_2_phase_6**: Test with hotel-specific filters | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
+| **ex_2_phase_6**: Test with guest country/city filters | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
+| **ex_2_phase_6**: Test with meal plan comparisons | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
+| **ex_2_phase_6**: Verify occupancy and RevPAR calculations are accurate | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
+| **ex_2_phase_6**: Test with edge cases (empty results, invalid dates) | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
+| **ex_2_phase_7**: Test end-to-end with WebSocket interface | 2026-01-13 | N/A | Test passed 🎉 see readme.md of the module for details |
+| **ex_2_phase_7**: Add comprehensive error handling (connection errors, query errors) | 2026-01-13 | [2abf679](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/2abf679fac3cd65ad52fa310f91d2443c001eed3) | Errors are handled gracefully |
+| **ex_2_phase_7**: Implement query timeout protection | 2026-01-15 | [9facc48](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/9facc480a10bb3abf3481928f24689d92656d666) | Added `max_execution_time=30` to agent creation |
+| **ex_2_phase_7**: Add logging for debugging SQL generation | 2026-01-15 | [9facc48](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/9facc480a10bb3abf3481928f24689d92656d666) | Implemented `_log_query` in `SQLQueryManager` |
+| **ex_2_phase_8**: Optimize system prompt for better SQL generation | 2026-01-15 | [9facc48](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/9facc480a10bb3abf3481928f24689d92656d666) | Enhanced `SYSTEM_PREFIX` with clearer steps and `execute_sql_with_cache` instruction |
+| **ex_2_phase_8**: Add query result caching for common queries (optional) | 2026-01-15 | [9facc48](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/9facc480a10bb3abf3481928f24689d92656d666) | Implemented `SQLQueryManager` with LRU cache and `execute_sql_with_cache` tool |
 
 ---
 
@@ -96,6 +126,8 @@
 |-------------|--------|----------|--------|
 | Agent relies on free tier Gemini API which limits full architecture testing | High | 2026-01-08 | Open |
 | Agent does not fallback to other tools (DB, reports) if RAG fails | High | 2026-01-08 | Open |
+| RAG agent tools (HotelDatabaseHelper) are coupled in same file, violating separation of concerns | Low | 2026-01-09 | Open |
+| Unused/Commented-out tools in RAG agent (tool_list_hotels, tool_get_prices...) adding clutter | Low | 2026-01-09 | Open |
 
 ---
 
@@ -199,57 +231,57 @@ When you complete a task, reference the commit like this:
 ### Exercise 2: Booking Analytics with SQL Agent
 
 #### Phase 1: Setup & Database Connection
-- [ ] Start PostgreSQL database using `./start-app.sh --no_ai_agent`
-- [ ] Install SQL dependencies (`langchain-community`, `psycopg2-binary`)
-- [ ] Verify database connection (test connection string)
-- [ ] Inspect database schema and understand table structure
-- [ ] Load sample booking data to test queries
+- [✅] Start PostgreSQL database using `./start-app.sh --no_ai_agent`
+- [✅] Install SQL dependencies (`langchain-community`, `psycopg2-binary`)
+- [✅] Verify database connection (test connection string)
+- [✅] Inspect database schema and understand table structure
+- [✅] Load sample booking data to test queries
 
 #### Phase 2: SQL Database Integration
-- [ ] Create SQLDatabase instance from connection URI
-- [ ] Test basic SQL queries manually (SELECT, COUNT, SUM)
-- [ ] Verify database schema introspection works
-- [ ] Test date filtering and aggregation queries
+- [✅] Create SQLDatabase instance from connection URI
+- [✅] Test basic SQL queries manually (SELECT, COUNT, SUM)
+- [✅] Verify database schema introspection works
+- [✅] Test date filtering and aggregation queries
 
 #### Phase 3: SQL Agent Implementation
-- [ ] Create SQLDatabaseToolkit with database and LLM
-- [ ] Implement create_sql_agent with proper system prompt
-- [ ] Configure agent for hospitality context (hotel names, dates, metrics)
-- [ ] Add custom system prompt explaining booking schema
-- [ ] Test agent with simple queries (booking counts)
+- [✅] Create SQLDatabaseToolkit with database and LLM
+- [✅] Implement create_sql_agent with proper system prompt
+- [✅] Configure agent for hospitality context (hotel names, dates, metrics)
+- [✅] Add custom system prompt explaining booking schema
+- [✅] Test agent with simple queries (booking counts)
 
 #### Phase 4: Analytics Calculations
-- [ ] Implement bookings count query logic
-- [ ] Implement occupancy rate calculation (two-step: query + formula)
-- [ ] Implement total revenue aggregation
-- [ ] Implement RevPAR calculation (revenue / available room-nights)
-- [ ] Handle edge cases (no bookings, division by zero)
+- [✅] Implement bookings count query logic
+- [✅] Implement occupancy rate calculation (two-step: query + formula)
+- [✅] Implement total revenue aggregation
+- [✅] Implement RevPAR calculation (revenue / available room-nights)
+- [✅] Handle edge cases (no bookings, division by zero)
 
 #### Phase 5: Two-Step Query Process
-- [ ] Implement Step 1: Generate SQL from natural language
-- [ ] Implement Step 2: Execute query and format results
-- [ ] Add query validation before execution
-- [ ] Implement result formatting (tables, markdown)
-- [ ] Add error handling for SQL syntax errors
+- [✅] Implement Step 1: Generate SQL from natural language
+- [✅] Implement Step 2: Execute query and format results
+- [✅] Add query validation before execution
+- [✅] Implement result formatting (tables, markdown)
+- [✅] Add error handling for SQL syntax errors
 
 #### Phase 6: Advanced Queries & Testing
-- [ ] Test with date range queries (months, quarters, years)
-- [ ] Test with hotel-specific filters
-- [ ] Test with guest country/city filters
-- [ ] Test with meal plan comparisons
-- [ ] Verify occupancy and RevPAR calculations are accurate
-- [ ] Test with edge cases (empty results, invalid dates)
+- [✅] Test with date range queries (months, quarters, years)
+- [✅] Test with hotel-specific filters
+- [✅] Test with guest country/city filters
+- [✅] Test with meal plan comparisons
+- [✅] Verify occupancy and RevPAR calculations are accurate
+- [✅] Test with edge cases (empty results, invalid dates)
 
 #### Phase 7: Integration & Error Handling
-- [ ] Integrate SQL agent with WebSocket API
-- [ ] Add comprehensive error handling (connection errors, query errors)
-- [ ] Implement query timeout protection
-- [ ] Add logging for debugging SQL generation
-- [ ] Test end-to-end with WebSocket interface
+- [✅] Integrate SQL agent with WebSocket API
+- [✅] Add comprehensive error handling (connection errors, query errors)
+- [✅] Implement query timeout protection
+- [✅] Add logging for debugging SQL generation
+- [✅] Test end-to-end with WebSocket interface
 
 #### Phase 8: Optimization & Documentation
-- [ ] Optimize system prompt for better SQL generation
-- [ ] Add query result caching for common queries (optional)
+- [✅] Optimize system prompt for better SQL generation
+- [✅] Add query result caching for common queries (optional)
 - [ ] Document SQL agent limitations and best practices
 - [ ] Add code comments and docstrings
 
@@ -258,10 +290,10 @@ When you complete a task, reference the commit like this:
 ## 📊 Quick Summary
 
 ```
-📌 Pending:  5
-🔥 In progress: 9
-✅ Completed: 40
-🐛 Technical debt: 2
+📌 Pending:  9
+🔥 In progress: 0
+✅ Completed: 76
+🐛 Technical debt: 4
 🎓 Workshop Exercises: 3 (Exercise 0, 1, 2)
 ```
 
