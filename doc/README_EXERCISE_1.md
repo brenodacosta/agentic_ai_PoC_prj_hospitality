@@ -87,6 +87,37 @@ While utilizing advanced patterns, the project currently faces specific constrai
     *   **Consequence**: Occasional `429 Too Many Requests` errors may occur during rapid testing sequences.
 *   **Vector Store Synchronization**: Currently, the vector store is populated on startup. If the underlying data changes, the index must be rebuilt (no incremental updates).
 
-## Tests
+## Optimization & Robustness Features
+
+### 1. Query Preprocessing & Validation
+To ensure the agent operates efficiently and securely, a preprocessing pipeline was introduced in `rag_agent_util.py`.
+
+*   **Sanitization**: The `preprocess_query(query)` function first normalizes the input by collapsing multiple whitespace characters (tabs, newlines, double spaces) into a single space.
+*   **Validation**:
+    *   **Minimum Length**: Queries shorter than 4 characters (e.g., "Hi", "?") are rejected immediately with a `ValueError`, saving unnecessary LLM calls and processing time.
+    *   **Maximum Length**: To prevent context window overflows and potential abuse, queries are truncated to a sensible maximum of **200 characters**.
+    *   **Empty Checks**: Blank or whitespace-only queries are caught early.
+
+### 2. Performance Caching (LRU)
+A Least Recently Used (LRU) caching mechanism, `RAGQueryCache`, has been integrated directly into the `answer_hotel_question_rag` flow.
+
+*   **Mechanism**: Since the RAG agent does not generate intermediate SQL, the cache uses the **MD5 hash of the preprocessed user query** as the key.
+*   **Storage**: Results (the final text answer) are stored in an in-memory `OrderedDict`.
+*   **Eviction Policy**: The cache has a strict limit (default: 5 entries). When new queries arrive, the least recently accessed result is evicted to maintain memory efficiency.
+*   **Benefit**: This ensures that users repeating questions (e.g., asking for the same address twice) get instant responses (~0ms) rather than waiting for the full Retrieval-Generation cycle (~3-8s).
+
+## Verification & Tests
+
+### The Test Suite (`test_exercise_1.py`)
+A comprehensive testing script was built to validate the agent's capabilities across different query types. It bypasses the API server to test the logic core directly.
+
+*   **Scope**: The script runs a suite of 11 distinct test cases covering:
+    *   **Simple Facts**: "What is the full address of..."
+    *   **Complex Aggregation**: "List all hotels in France..."
+    *   **Math/Pricing**: "What is the cost of a Double room..."
+    *   **Comparisons**: "Compare room prices between..."
+    *   **Edge Cases**: Handling non-existent cities ("Bordeaux") or ambiguous queries ("Price of a room?").
+*   **Performance Metrics**: It measures the execution time of each query, flagging any response that takes longer than 10 seconds.
+*   **Automated Checks**: It counts successes vs. failures and provides a final pass/fail summary for the entire suite.
 
 *(Screenshots of the tests performed will be added here)*
