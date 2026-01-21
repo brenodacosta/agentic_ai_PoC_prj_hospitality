@@ -8,9 +8,7 @@
 
 | Task | Priority | Started | Notes |
 |------|----------|---------|-------|
-| **ex_0_phase_2**: Implement `load_hotel_data` to read hotel files | 🔴 | 2025-12-16 | - |
-| **ex_0_phase_2**: Implement `initialize_agent` with LangChain & Gemini | 🔴 | 2025-12-16 | - |
-| **ex_0_phase_2**: Implement `answer_hotel_question` for simple queries | 🔴 | 2025-12-16 | - |
+| _No tasks in progress_ | - | - | - |
 
 ---
 
@@ -19,8 +17,16 @@
 ### High Priority
 | # | Task | Created | Context |
 |---|------|--------|---------|
-| 1 | **ex_0_phase_3**: Verify agent implementation with `test_exercise_0.py` | 2025-12-16 | ai_agents_hospitality-api/ |
-| 2 | **ex_0_phase_3**: Create `handle_hotel_query_simple()` async function for WebSocket API | 2025-12-16 | ai_agents_hospitality-api/main.py |
+| 1 | **ex_1_phase_1**: Install RAG dependencies (`langchain-community`, `chromadb`) | 2025-12-16 | ai_agents_hospitality-api/ |
+| 2 | **ex_1_phase_1**: Generate full hotel dataset (50 hotels) using `gen_synthetic_hotels.py` | 2025-12-16 | bookings-db/ |
+| 3 | **ex_1_phase_1**: Verify all hotel files are created (JSON, markdown files) | 2025-12-16 | bookings-db/output_files/hotels/ |
+| 4 | **ex_1_phase_2**: Implement document loader for `hotels.json` (JSONLoader) | 2025-12-16 | agents/hotel_rag_agent.py |
+| 5 | **ex_1_phase_2**: Implement document loader for `hotel_details.md` (TextLoader) | 2025-12-16 | agents/hotel_rag_agent.py |
+| 6 | **ex_1_phase_2**: Implement document loader for `hotel_rooms.md` (TextLoader) | 2025-12-16 | agents/hotel_rag_agent.py |
+| 7 | **ex_1_phase_2**: Configure RecursiveCharacterTextSplitter (chunk_size=1000, overlap=200) | 2025-12-16 | agents/hotel_rag_agent.py |
+| 8 | **ex_1_phase_2**: Create GoogleGenerativeAIEmbeddings instance | 2025-12-16 | agents/hotel_rag_agent.py |
+| 9 | **ex_1_phase_2**: Build ChromaDB vector store from all documents | 2025-12-16 | agents/hotel_rag_agent.py |
+| 10 | **ex_1_phase_2**: Persist vector store to disk for reuse | 2025-12-16 | agents/hotel_rag_agent.py |
 
 ### Medium Priority
 | # | Task | Created | Context |
@@ -38,10 +44,26 @@
 
 | Task | Completed | Commit | Notes |
 |------|-----------|--------|-------|
-| **ex_0_phase_1**: Install LangChain dependencies (langchain, langchain-google-genai) | 2025-12-16 | N/A | Libraries were created in the venv |
-| **ex_0_phase_1**: Generate synthetic hotel data (3 hotels) using gen_synthetic_hotels.py | 2025-12-16 | [ef0a0d6](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/ef0a0d601f090a1f16d9982ca66d6c22fe3352b8) | Data was created in the xlsx files |
-| **ex_0_phase_1**: Verify hotel files are created in bookings-db/output_files/hotels/ | 2025-12-16 | [ef0a0d6](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/ef0a0d601f090a1f16d9982ca66d6c22fe3352b8) | Data was created in the xlsx files |
+| **bugfix**: Fix docker compose command | 2025-12-11 | [a5b6bd8](https://github.com/delard-linux/agentic_ai_PoC_prj_hospitality/commit/a5b6bd89c76b683d38e3214efc720514bca546a1) | PR accepted in source repo. |
+| **bugfix**: Fix pull policy to do never pull images from docker hub | 2025-12-11 | [fa68adf](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/fa68adf98c28787f7632ae97b1a9157ca26ca455) | PR accepted in source repo. |
 | **ex_0_phase_1**: Configure Google Gemini API key as environment variable (AI_AGENTIC_API_KEY) | 2025-12-11 | N/A | Deployed and tested the key. Added the key to bashrc file. |
+| **ex_0_phase_1**: Verify hotel files are created in bookings-db/output_files/hotels/ | 2025-12-16 | [ef0a0d6](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/ef0a0d601f090a1f16d9982ca66d6c22fe3352b8) | Data was created in the xlsx files |
+| **ex_0_phase_1**: Generate synthetic hotel data (3 hotels) using gen_synthetic_hotels.py | 2025-12-16 | [ef0a0d6](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/ef0a0d601f090a1f16d9982ca66d6c22fe3352b8) | Data was created in the xlsx files |
+| **ex_0_phase_1**: Install LangChain dependencies (langchain, langchain-google-genai) | 2025-12-16 | N/A | Libraries were created in the venv |
+| **ex_0_phase_2**: Build LangChain chain (prompt template + LLM) | 2025-12-16 | [e411356](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/e411356fff549768fd82728ac8a43bf8ae615a61) | Most of the code was already given in the guide |
+| **ex_0_phase_2**: Create ChatPromptTemplate with system prompt for hotel assistant | 2025-12-16 | [e411356](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/e411356fff549768fd82728ac8a43bf8ae615a61) | Most of the code was already given in the guide |
+| **ex_0_phase_2**: Implement answer_hotel_question() function with file context | 2025-12-16 | [e411356](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/e411356fff549768fd82728ac8a43bf8ae615a61) | Most of the code was already given in the guide |
+| **ex_0_phase_2**: Create function to load hotel details markdown (hotel_details.md) | 2025-12-16 | [e411356](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/e411356fff549768fd82728ac8a43bf8ae615a61) | Small change was done to retrieve data from hotels_details.md |
+| **ex_0_phase_2**: Create function to load hotel JSON file (hotels.json) | 2025-12-16 | [e411356](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/e411356fff549768fd82728ac8a43bf8ae615a61) | Small change was done to retrieve data from hotels.json |
+| **ex_0_phase_3**: Test with room information queries | 2025-12-16 | [d525544](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d525544fff549768fd82728ac8a43bf8ae615a61) | Most of the code was already given in the guide |
+| **ex_0_phase_3**: Test with meal plan queries | 2025-12-16 | [d525544](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d525544fff549768fd82728ac8a43bf8ae615a61) | Most of the code was already given in the guide |
+| **ex_0_phase_3**: Test with basic queries (hotel names, addresses, locations) | 2025-12-16 | [d525544](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/d525544fff549768fd82728ac8a43bf8ae615a61) | Most of the code was already given in the guide |
+| **ex_0_phase_3**: Create `handle_hotel_query_simple()` async function for WebSocket API | 2025-12-16 | [e411356](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/e411356fff549768fd82728ac8a43bf8ae615a61) | Most of the code was already given in the guide |
+| **ex_0_phase_3**: Verify agent implementation with `test_exercise_0.py` | 2025-12-16 | [e411356](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/e411356fff549768fd82728ac8a43bf8ae615a61) | All 4 tests passed 🎉 |
+| **ex_0_phase_3**: Verify error handling works correctly | 2025-12-16 | [e411356](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/e411356fff549768fd82728ac8a43bf8ae615a61) | - |
+| **ex_0_phase_4**: Add code comments and docstrings | 2025-12-16 | [e411356](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/e411356fff549768fd82728ac8a43bf8ae615a61) | - |
+| **ex_0_phase_4**: Verify responses are properly formatted | 2025-12-16 | [e411356](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/e411356fff549768fd82728ac8a43bf8ae615a61) | - |
+| **ex_0_phase_4**: Test integration with WebSocket API endpoint | 2025-12-16 | [41acfff](https://github.com/brenodacosta/agentic_ai_PoC_prj_hospitality/commit/41acffffa02424d534bd1ebc8142a295aabe650a) | Integration validated with `test_websocket_integration.py` |
 
 ---
 
@@ -85,23 +107,23 @@ When you complete a task, reference the commit like this:
 - [✅] Verify hotel files are created in `bookings-db/output_files/hotels/`
 
 #### Phase 2: Core Implementation
-- [ ] Create function to load hotel JSON file (`hotels.json`)
-- [ ] Create function to load hotel details markdown (`hotel_details.md`)
-- [ ] Implement `answer_hotel_question()` function with file context
-- [ ] Create ChatPromptTemplate with system prompt for hotel assistant
-- [ ] Build LangChain chain (prompt template + LLM)
+- [✅] Create function to load hotel JSON file (`hotels.json`)
+- [✅] Create function to load hotel details markdown (`hotel_details.md`)
+- [✅] Implement `answer_hotel_question()` function with file context
+- [✅] Create ChatPromptTemplate with system prompt for hotel assistant
+- [✅] Build LangChain chain (prompt template + LLM)
 
 #### Phase 3: Integration & Testing
-- [ ] Create `handle_hotel_query_simple()` async function for WebSocket API
-- [ ] Test with basic queries (hotel names, addresses, locations)
-- [ ] Test with meal plan queries
-- [ ] Test with room information queries
-- [ ] Verify error handling works correctly
+- [✅] Create `handle_hotel_query_simple()` async function for WebSocket API
+- [✅] Test with basic queries (hotel names, addresses, locations)
+- [✅] Test with meal plan queries
+- [✅] Test with room information queries
+- [✅] Verify error handling works correctly
 
 #### Phase 4: Documentation & Cleanup
-- [ ] Add code comments and docstrings
-- [ ] Test integration with WebSocket API endpoint
-- [ ] Verify responses are properly formatted
+- [✅] Add code comments and docstrings
+- [✅] Test integration with WebSocket API endpoint
+- [✅] Verify responses are properly formatted
 
 ---
 
@@ -212,9 +234,9 @@ When you complete a task, reference the commit like this:
 ## 📊 Quick Summary
 
 ```
-📌 Pending:  2
-🔥 In progress: 3
-✅ Completed: 4
+📌 Pending:  10
+🔥 In progress: 0
+✅ Completed: 20
 🐛 Technical debt: 0
 🎓 Workshop Exercises: 3 (Exercise 0, 1, 2)
 ```
