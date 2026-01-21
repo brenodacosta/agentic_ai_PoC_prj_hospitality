@@ -1,7 +1,41 @@
 import json
 import re
+import hashlib
+from collections import OrderedDict
 from langchain.tools import tool
 from util.logger_config import logger
+
+class RAGQueryCache:
+    """
+    Manages RAG query caching using LRU strategy.
+    """
+    _cache = OrderedDict()
+    MAX_CACHE_SIZE = 5
+
+    @staticmethod
+    def _get_query_hash(query: str) -> str:
+        """Generates a simple hash for the query."""
+        return hashlib.md5(query.strip().encode()).hexdigest()
+
+    @staticmethod
+    def get(query: str):
+        """Retrieves result from cache if exists."""
+        query_hash = RAGQueryCache._get_query_hash(query)
+        if query_hash in RAGQueryCache._cache:
+            logger.info(f"Cache Hit for query: {query}")
+            RAGQueryCache._cache.move_to_end(query_hash)
+            return RAGQueryCache._cache[query_hash]["result"]
+        return None
+
+    @staticmethod
+    def store(query: str, result: str):
+        """Stores query result in cache."""
+        query_hash = RAGQueryCache._get_query_hash(query)
+        RAGQueryCache._cache[query_hash] = {"query": query, "result": result}
+        
+        # Enforce LRU size
+        if len(RAGQueryCache._cache) > RAGQueryCache.MAX_CACHE_SIZE:
+            RAGQueryCache._cache.popitem(last=False) # pop first (Least Recently Used)
 
 def preprocess_query(query: str) -> str:
     """

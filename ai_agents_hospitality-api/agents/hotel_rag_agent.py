@@ -13,7 +13,7 @@ from langchain_core.documents import Document
 from util.configuration import PROJECT_ROOT
 from util.logger_config import logger
 from config.agent_config import get_agent_config, _load_config_file
-from util.rag_agent_util import get_db_helper, tool_calculate_prices, tool_market_analysis, preprocess_query
+from util.rag_agent_util import get_db_helper, tool_calculate_prices, tool_market_analysis, preprocess_query, RAGQueryCache
 
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain.tools import tool
@@ -279,11 +279,19 @@ def answer_hotel_question_rag(question: str) -> str:
         # Preprocessing Step (Normalization & Validation)
         clean_question = preprocess_query(question)
         
+        # Check Cache
+        cached_result = RAGQueryCache.get(clean_question)
+        if cached_result:
+             return cached_result
+
         logger.info(f"Processing RAG question: {clean_question[:100]}...")
         
         # CHANGED: We now invoke the agent_executor, not qa_chain
         # The key is "input", not "query"
         result = agent_executor.invoke({"input": clean_question})
+        
+        # Store in Cache
+        RAGQueryCache.store(clean_question, result["output"])
         
         # The output key is "output", not "result"
         return result["output"]
