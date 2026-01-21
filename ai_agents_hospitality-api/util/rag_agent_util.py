@@ -1,5 +1,32 @@
 import json
+import re
 from langchain.tools import tool
+from util.logger_config import logger
+
+def preprocess_query(query: str) -> str:
+    """
+    Normalizes and validates the user query before sending it to the agent.
+    
+    1. Normalization: Removes whitespace, standardizes spaces.
+    2. Validation: Checks length constraints and empty content.
+    """
+    if not query:
+        raise ValueError("Query cannot be empty.")
+
+    # Normalization: internal whitespace compression (tab/newlines -> single space)
+    cleaned_query = re.sub(r'\s+', ' ', query).strip()
+
+    # Validation: Minimum length (avoids noise like '?', 'hi', 'a')
+    if len(cleaned_query) < 4:
+        raise ValueError("Query is too short. Please provide a specific question about the hotels.")
+
+    # Validation: Maximum length (security & token limit protection)
+    MAX_QUERY_LENGTH = 200
+    if len(cleaned_query) > MAX_QUERY_LENGTH:
+        logger.warning(f"Query too long ({len(cleaned_query)} chars). Truncating to {MAX_QUERY_LENGTH}.")
+        cleaned_query = cleaned_query[:MAX_QUERY_LENGTH]
+
+    return cleaned_query
 
 class HotelDatabaseHelper:
     def __init__(self, json_path):
