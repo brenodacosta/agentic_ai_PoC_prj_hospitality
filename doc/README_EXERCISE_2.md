@@ -79,7 +79,7 @@ While functional, the current implementation has known limitations:
 
 The following test demonstrates the agent's behavior under load limits and timeout constraints.
 
-<img src="doc/ex2-test-timeout.png" width="600" alt="Timeout Test Screenshot">
+<img src="ex2-test-timeout.png" width="600" alt="Timeout Test Screenshot">
 
 **Test Description:**
 
